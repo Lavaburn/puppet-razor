@@ -1,0 +1,15 @@
+# Fixtures file hold the dependencies for spec helper
+
+fixtures:
+  forge_modules:
+#    stdlib:
+#     repo: "puppetlabs/stdlib"
+#     ref: "4.3.2"
+      
+  repositories:
+#    nfs: 
+#      repo: "https://github.com/[USER]/[MODULE].git"
+#      branch: "[BRANCH]"
+
+  symlinks:
+    cloudstack: "#{source_dir}"

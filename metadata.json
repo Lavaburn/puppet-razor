@@ -1,0 +1,12 @@
+{
+  "name": "lavaburn-razor",
+  "version": "0.1.0",
+  "author": "Nicolas Truyens",
+  "license": "Apache License 2.0",
+  "project_page": "https://bitbucket.org/Lavaburn/puppet-razor",
+  "summary": "Puppet module for managing PURPOSE",
+  "dependencies": [
+    {"name":"puppetlabs/stdlib"}
+  ],
+  "source": "https://bitbucket.org/Lavaburn/puppet-razor"
+}
