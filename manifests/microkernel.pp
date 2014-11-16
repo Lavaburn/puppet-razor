@@ -50,6 +50,7 @@ class razor::microkernel inherits razor {
 				    command     => '/usr/bin/scl enable ruby193 /opt/build-microkernel.sh',
 				    subscribe   => File['/opt/build-microkernel.sh'],
 				    refreshonly => true,
+            timeout     => 3600,
 				  }
         }
         default: {

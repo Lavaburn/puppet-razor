@@ -25,5 +25,5 @@ class example::profile {
   }
 
   # Class Dependencies/Sequence
-  # TODO - Class['postgres???'] -> Class['razor']
+  Class['postgresql::server'] -> Class['razor']
 }

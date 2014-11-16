@@ -101,10 +101,7 @@ describe 'razor' do
 	  	:clientcert				           => 'centos',	# HIERA !!!
 	  } }
   
-  	# TODO it { should compile.with_all_deps }
-  	# expected that the catalogue would include Package[tftp-server] 
-  	# used at modules/tftp/manifests/init.pp:70 in Xinetd::Service[tftp]
-  	# TODO - Module TFTP should be forked. Can't hard-copy package name to tftp-hpa in centos !!! 
+  	it { should compile.with_all_deps }
     
     it { should contain_class('razor') }
               
