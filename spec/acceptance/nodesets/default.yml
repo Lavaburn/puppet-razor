@@ -1,11 +1,19 @@
 HOSTS:
-  ubuntu-14-04:
+  ubuntu-12-04:
     roles:
       - master
       - agent
-    platform: ubuntu-14.04-x64
-    box: puppetlabs/ubuntu-14.04-64-puppet
-    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-14.04-64-puppet
-    hypervisor: vagrant
+    platform: ubuntu-12.04-x64
+    box: puppetlabs/ubuntu-12.04-64-puppet
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-12.04-64-puppet
+    hypervisor: vagrant    
+  centos-6.5: 
+    roles:
+      - agent
+    platform: centos-6.5-x64
+    box: puppetlabs/centos-6.5-64-puppet
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/centos-6.5-64-puppet
+    hypervisor: vagrant   
+    
 CONFIG:
   type: foss

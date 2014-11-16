@@ -6,7 +6,10 @@
   "project_page": "https://bitbucket.org/Lavaburn/puppet-razor",
   "summary": "Puppet module for managing PURPOSE",
   "dependencies": [
-    {"name":"puppetlabs/stdlib"}
+    {"name":"puppetlabs/stdlib"},
+    {"name":"puppetlabs/postgresql"},
+    {"name":"puppetlabs/concat"},
+    {"name":"puppetlabs/vcsrepo"}
   ],
   "source": "https://bitbucket.org/Lavaburn/puppet-razor"
 }

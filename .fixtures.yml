@@ -2,9 +2,24 @@
 
 fixtures:
   forge_modules:
-#    stdlib:
-#     repo: "puppetlabs/stdlib"
-#     ref: "4.3.2"
+    stdlib:
+     repo: "puppetlabs/stdlib"
+     ref: "4.3.2"
+    postgresql:
+      repo: "puppetlabs/postgresql"
+      ref: "4.1.0"
+#    xinetd:
+#      repo: "puppetlabs/xinetd"
+#      ref: "1.3.1"
+    vcsrepo:
+      repo: "puppetlabs/vcsrepo"
+      ref: "1.2.0"  
+#    apt:
+#      repo: "puppetlabs/apt"
+#      ref: "1.7.0"  
+    concat:
+      repo: "puppetlabs/concat"
+      ref: "1.1.2"
       
   repositories:
 #    nfs: 
@@ -12,4 +27,4 @@ fixtures:
 #      branch: "[BRANCH]"
 
   symlinks:
-    cloudstack: "#{source_dir}"
+    razor: "#{source_dir}"

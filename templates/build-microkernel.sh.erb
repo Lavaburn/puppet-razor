@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# realpath is not available on CentOS 6.5
+rpm -i http://apt.sw.be/redhat/el<%= @version %>/en/x86_64/rpmforge/RPMS/realpath-1.17-1.el<%= @version %>.rf.x86_64.rpm
+
+# Go to source code directory
+cd /opt/razor-el-mk
+
+# Install gems using bundler
+bundle install --path .bundle/gems/
+
+# Execute Rake-task: build
+bundle exec rake build
+
+# Build LiveCD
+./build-livecd
+./build-livecd-root
