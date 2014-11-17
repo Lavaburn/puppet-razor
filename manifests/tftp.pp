@@ -27,6 +27,7 @@ class razor::tftp inherits razor {
 
   tftp::file { 'undionly.kpxe':
     ensure => file,
+    source => "${directory}/undionly.kpxe",
   }
 
   # bootstrap.ipxe
@@ -36,5 +37,6 @@ class razor::tftp inherits razor {
 
   tftp::file { 'bootstrap.ipxe':
     ensure => file,
+    source => "${directory}/bootstrap.ipxe",
   }
 }
