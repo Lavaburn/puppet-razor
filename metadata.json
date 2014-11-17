@@ -9,7 +9,8 @@
     {"name":"puppetlabs/stdlib"},
     {"name":"puppetlabs/postgresql"},
     {"name":"puppetlabs/concat"},
-    {"name":"puppetlabs/vcsrepo"}
+    {"name":"puppetlabs/vcsrepo"},
+    {"name":"puppetlabs/apt"}
   ],
   "source": "https://bitbucket.org/Lavaburn/puppet-razor"
 }

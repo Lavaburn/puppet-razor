@@ -12,24 +12,53 @@
 
 ##Overview
 
-   
+This module installs and sets up Razor.
 
 ##Dependencies
 
+The Database should be postgres >= 9.1
 
+Modules:
+- puppetlabs/stdlib (REQUIRED)
+- puppetlabs/postgresql (Optional)
+	- puppetlabs/apt (postgresql)
+	- puppetlabs/concat (postgresql)
+- puppetlabs/vcsrepo (Optional)
+
+* If you want to set up PostgreSQL config:
+  	- include 'posgresql::server'	[puppetlabs/postgresql]
+* If you want to compile the Microkernel (on Fedora/CentOS/RHEL)
+	- puppetlabs/vcsrepo module 
 
 ##Usage
      
+It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
+	[https://github.com/TomPoulton/hiera-eyaml]
+	[https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
+
+Make sure to include all dependencies as per above.
+
+Also see the examples/profile.pp file for an example on how to set up dependencies.   
      
      
+  class { 'razor':
+    db_hostname => '127.0.0.1',
+    db_password => 'notasecretpassword',
+  } 
+
+
 ##Reference
 
-
+You should only use the 'razor' class.
 
 ##Compatibility
 
 This module has been tested with:
+- Puppet 3.7.3 - Ruby 1.9.3 - Ubuntu 12.04
+- Puppet 3.7.3 - Ruby 1.8.7 - CentOS 6.3
 
+* compile_microkernel can only work on RHEL/CentOS/Fedora
+* enable_server requires Postgres >= 9.1
 
 ##Testing
 
