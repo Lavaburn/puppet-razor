@@ -27,6 +27,7 @@ Modules:
 - puppetlabs/tftp (Optional)
 	- puppetlabs/xinetd (tftp)
 - maestrodev/wget (Optional/tftp)
+- lavaburn/archive (Optional)
 
 * If you want to set up PostgreSQL config:
   	- include 'posgresql::server'	[puppetlabs/postgresql]
@@ -35,7 +36,9 @@ Modules:
 * If you want to set up TFTP boot files
 	- include 'wget'
 	- class { '::tftp': }		[puppetlabs/tftp]
-	
+* If you want to download/extract a microkernel, 
+	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled) => See own compiler !!! TODO @@archive ???
+	- lavaburn/archive module	
 	
 ##Usage
      

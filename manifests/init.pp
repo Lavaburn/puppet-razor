@@ -18,6 +18,7 @@
 # * server_package_version (string): Package version for Razor Server (Default: 'latest')
 # * server_config_file (string): See Params
 # * server_service_name (string): See Params
+# * microkernel_url (string): See Params
 #
 # (*) It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
 # [https://github.com/TomPoulton/hiera-eyaml]
@@ -63,6 +64,9 @@ class razor (
   # TFTP
   $server_hostname          = $::ipaddress,
   $tftp_root                = undef,
+
+  # Microkernel
+  $microkernel_url          = $razor::params::microkernel_url,
 ) inherits razor::params {
   # Validation
   validate_bool($enable_client, $enable_db, $enable_server, $compile_microkernel)
@@ -90,6 +94,13 @@ class razor (
     Anchor['razor-server-dependencies'] -> Class['razor::server'] -> Anchor['razor-server-postinstall']
   }
 
+  # Razor Microkernel download/unpack
+  if $microkernel_url != undef {
+    contain razor::microkernel
+
+    Anchor['razor-server-postinstall'] -> Class['razor::microkernel']
+  }
+
   # Razor TFTP Server
   if $enable_tftp {
     contain razor::tftp
@@ -99,6 +110,6 @@ class razor (
 
   # Razor Microkernel Compiler
   if $compile_microkernel {
-    contain razor::microkernel
+    contain razor::microkernel::compile
   }
 }

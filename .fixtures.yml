@@ -28,6 +28,9 @@ fixtures:
       ref: "1.5.6"  
 
   repositories:
+    archive:
+      repo: "https://github.com/lavaburn/puppet-archive.git"
+      branch: "tar_support"
 #    nfs: 
 #      repo: "https://github.com/[USER]/[MODULE].git"
 #      branch: "[BRANCH]"

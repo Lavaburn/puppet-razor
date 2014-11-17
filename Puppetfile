@@ -9,3 +9,8 @@ mod 'puppetlabs-vcsrepo'
 mod 'puppetlabs-tftp'
 mod 'puppetlabs-xinetd'
 mod 'maestrodev/wget'
+
+mod 'archive',
+  :git => "https://github.com/lavaburn/puppet-archive.git", 
+  :ref => "tar_support"
+  

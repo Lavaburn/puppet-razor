@@ -37,6 +37,8 @@ describe 'razor' do
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
+      it { should contain_class('razor::microkernel') }
+      it { should_not contain_class('razor::microkernel::compile') }
         
         
       it { should contain_package('razor-client') }    
@@ -55,6 +57,10 @@ describe 'razor' do
         'destination' => "/var/lib/tftpboot/bootstrap.ipxe"
 	    ) }       
       it { should contain_tftp__file('bootstrap.ipxe') }
+        
+      it { should contain_archive('razor-microkernel').with(
+        'url' => "http://links.puppetlabs.com/razor-microkernel-latest.tar"
+      ) }
     end
       
     context "ubuntu_without_client" do
@@ -71,6 +77,8 @@ describe 'razor' do
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
+      it { should contain_class('razor::microkernel') }
+      it { should_not contain_class('razor::microkernel::compile') }
 	  end
 	  
 	  context "ubuntu_without_db" do
@@ -87,6 +95,8 @@ describe 'razor' do
       it { should_not contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
+      it { should contain_class('razor::microkernel') }
+      it { should_not contain_class('razor::microkernel::compile') }
 	  end
 	  
 	  context "ubuntu_without_server" do
@@ -103,6 +113,8 @@ describe 'razor' do
       it { should contain_class('razor::db') }
       it { should_not contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
+      it { should contain_class('razor::microkernel') }
+      it { should_not contain_class('razor::microkernel::compile') }
 	  end
       
     context "ubuntu_without_tftp" do
@@ -119,6 +131,8 @@ describe 'razor' do
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should_not contain_class('razor::tftp') }
+      it { should contain_class('razor::microkernel') }
+      it { should_not contain_class('razor::microkernel::compile') }
     end
   end
   
@@ -146,7 +160,8 @@ describe 'razor' do
     it { should contain_class('razor::db') }
     it { should contain_class('razor::server') }
     it { should_not contain_class('razor::tftp') }
-      
+    it { should contain_class('razor::microkernel') }
+    it { should contain_class('razor::microkernel::compile') }
       
     it { should contain_package('razor-client') }    
             
