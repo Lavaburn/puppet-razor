@@ -6,6 +6,7 @@
 # * enable_client (boolean): Whether to install/configure Razor Client
 # * enable_db (boolean): Whether to configure Postgres DB for Razor
 # * enable_server (boolean): Whether to install/configure Razor Server
+# * enable_tftp (boolean): Whether to retrieve and "export" bootfiles to PXE Server
 # * compile_microkernel (boolean): Whether to create new Microkernel for Razor
 # * client_package_name (string): See Params
 # * client_package_version (string): Package version for Razor Client (Default: 'latest')
@@ -40,6 +41,7 @@ class razor (
   $enable_client            = true,
   $enable_db                = true,
   $enable_server            = true,
+  $enable_tftp              = true,
   $compile_microkernel      = true,
 
   # Client
@@ -57,12 +59,17 @@ class razor (
   $server_package_version   = 'latest',
   $server_config_file       = $razor::params::server_config_file,
   $server_service_name      = $razor::params::server_service_name,
+
+  # TFTP
+  $server_hostname          = $::ipaddress,
+  $tftp_root                = undef,
 ) inherits razor::params {
   # Validation
   validate_bool($enable_client, $enable_db, $enable_server, $compile_microkernel)
 
   # Dependencies
   anchor { 'razor-server-dependencies': }
+  anchor { 'razor-server-postinstall': }
 
   # Razor Client
   if $enable_client {
@@ -80,13 +87,18 @@ class razor (
   if $enable_server {
     contain razor::server
 
-    Anchor['razor-server-dependencies'] -> Class['razor::server']
+    Anchor['razor-server-dependencies'] -> Class['razor::server'] -> Anchor['razor-server-postinstall']
+  }
+
+  # Razor TFTP Server
+  if $enable_tftp {
+    contain razor::tftp
+
+    Anchor['razor-server-postinstall'] -> Class['razor::tftp']
   }
 
   # Razor Microkernel Compiler
   if $compile_microkernel {
     contain razor::microkernel
   }
-
-
 }

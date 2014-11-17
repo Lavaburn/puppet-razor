@@ -9,6 +9,7 @@ describe 'razor class' do
                 enable_client  => false,
                 enable_db      => false,
                 enable_server  => false,
+                enable_tftp    => false,
               }
            EOS
            # TODO - CentOS currently uses verion too old for razor DB migrate
@@ -28,6 +29,10 @@ describe 'razor class' do
     it 'should work with no errors' do
       pp = <<-EOS
               class { '::postgresql::server': }
+              class { '::tftp':
+                directory => '/var/lib/tftpboot',
+                address   => 'localhost',
+              }
               class { 'razor': 
                 compile_microkernel   => false,
               }

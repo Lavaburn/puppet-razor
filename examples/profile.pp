@@ -18,6 +18,13 @@ class example::profile {
     # Redhat:
     #TODO PUPPETLABS REPO (YUM)
 
+    # if enable_tftp => true
+    class { '::tftp':
+	    directory => '/var/lib/tftpboot',
+	    address   => 'localhost',
+	  }
+	  include 'wget'
+
   # Razor Configuration
   class { 'razor':
     db_hostname => '127.0.0.1',

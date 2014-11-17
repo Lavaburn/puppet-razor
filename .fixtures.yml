@@ -8,9 +8,6 @@ fixtures:
     postgresql:
       repo: "puppetlabs/postgresql"
       ref: "4.1.0"
-#    xinetd:
-#      repo: "puppetlabs/xinetd"
-#      ref: "1.3.1"
     vcsrepo:
       repo: "puppetlabs/vcsrepo"
       ref: "1.2.0"  
@@ -20,7 +17,16 @@ fixtures:
     concat:
       repo: "puppetlabs/concat"
       ref: "1.1.2"
-      
+    tftp:
+      repo: "puppetlabs/tftp"
+      ref: "0.2.2"  
+    xinetd:
+      repo: "puppetlabs/xinetd"
+      ref: "1.3.1"
+    wget:
+      repo: "maestrodev/wget"
+      ref: "1.5.6"  
+
   repositories:
 #    nfs: 
 #      repo: "https://github.com/[USER]/[MODULE].git"

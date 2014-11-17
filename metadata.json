@@ -10,7 +10,11 @@
     {"name":"puppetlabs/postgresql"},
     {"name":"puppetlabs/concat"},
     {"name":"puppetlabs/vcsrepo"},
-    {"name":"puppetlabs/apt"}
+    {"name":"puppetlabs/apt"},
+    {"name":"puppetlabs/tftp"},
+    {"name":"puppetlabs/xinetd"},
+    {"name":"maestrodev-wget","version_requirement":""},
+    {"name":"maestrodev/wget","version_requirement":"1.5.6"}
   ],
   "source": "https://bitbucket.org/Lavaburn/puppet-razor"
 }

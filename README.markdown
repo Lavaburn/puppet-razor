@@ -24,12 +24,19 @@ Modules:
 	- puppetlabs/apt (postgresql)
 	- puppetlabs/concat (postgresql)
 - puppetlabs/vcsrepo (Optional)
+- puppetlabs/tftp (Optional)
+	- puppetlabs/xinetd (tftp)
+- maestrodev/wget (Optional/tftp)
 
 * If you want to set up PostgreSQL config:
   	- include 'posgresql::server'	[puppetlabs/postgresql]
 * If you want to compile the Microkernel (on Fedora/CentOS/RHEL)
 	- puppetlabs/vcsrepo module 
-
+* If you want to set up TFTP boot files
+	- include 'wget'
+	- class { '::tftp': }		[puppetlabs/tftp]
+	
+	
 ##Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
