@@ -5,6 +5,27 @@ describe 'razor class' do
     it 'should work with no errors' do
       pp = <<-EOS
               class { '::postgresql::server': }
+              class { 'razor': }
+           EOS
+           
+      # Run it twice and test for idempotency
+      agents.each do |agent|
+        if agent['platform'] =~ /centos/
+          # Microkernel compilation is only support on RHEL/CentOS/Fedora
+          
+          # CentOS 6.5 currently uses verion too old for razor DB migrate
+            # https://groups.google.com/forum/#!topic/puppet-razor/Cxcz56GXUbk
+          
+          #apply_manifest_on(agent, pp, :catch_failures => true)            
+          #expect(apply_manifest_on(agent, pp, :catch_failures => true).exit_code).to be_zero
+        end 
+      end
+    end
+  end
+  
+  describe 'razor microkernel only' do    
+    it 'should work with no errors' do
+      pp = <<-EOS
               class { 'razor': 
                 enable_client  => false,
                 enable_db      => false,
@@ -12,8 +33,6 @@ describe 'razor class' do
                 enable_tftp    => false,
               }
            EOS
-           # TODO - CentOS currently uses verion too old for razor DB migrate
-           # https://groups.google.com/forum/#!topic/puppet-razor/Cxcz56GXUbk
            
       # Run it twice and test for idempotency
       agents.each do |agent|

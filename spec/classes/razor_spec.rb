@@ -150,7 +150,7 @@ describe 'razor' do
     let(:params) { {     
       :enable_tftp           => false,
     } }
-    #TODO - TFTP has a bug with package is not tftp-hpa. Need to do a pull request for that.
+    #TFTP module has a bug that fails the spec test for non-debian OSes
   
   	it { should compile.with_all_deps }
     

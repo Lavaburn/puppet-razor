@@ -37,7 +37,7 @@ Modules:
 	- include 'wget'
 	- class { '::tftp': }		[puppetlabs/tftp]
 * If you want to download/extract a microkernel, 
-	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled) => See own compiler !!! TODO @@archive ???
+	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
 	- lavaburn/archive module	
 	
 ##Usage

@@ -14,6 +14,7 @@ class razor::server inherits razor {
   validate_string($::razor::database_username, $::razor::database_password)
   validate_string($::razor::server_package_name, $::razor::server_package_version)
   validate_absolute_path($::razor::server_config_file)
+  validate_absolute_path($::razor::repo_store)
 
   # Compatibility
   case $::osfamily {
@@ -102,6 +103,7 @@ class razor::server inherits razor {
 
   # Configuration File
   $db_url_production = "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
+  $repo_store = $::razor::repo_store
 
   Package[$::razor::server_package_name]
   ->

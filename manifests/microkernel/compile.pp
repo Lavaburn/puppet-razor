@@ -14,8 +14,17 @@ class razor::microkernel::compile inherits razor {
       case $::operatingsystem {
         'CentOS', 'Fedora': {
           # [CentOS] Require EPEL Repository for the livecd-tools
+          #$install_epel = true
           $version = $::operatingsystemmajrelease
 
+          # [CentOS 6] Require Ruby 1.9.3
+          $extra_packages = ['ruby193']
+
+          # [CentOS 6.5] Require realpath
+          $install_realpath = true
+          # TODO - check CentOS 5, 7, Fedora 19, 20, RHEL 5, 6, 7 ?
+
+          # Action Chain
           file { '/etc/yum.repos.d/epel.repo':
             content => template('razor/epel.repo.erb'),
           } ->
@@ -24,8 +33,7 @@ class razor::microkernel::compile inherits razor {
             ensure => 'installed',
           } ->
 
-          # [CentOS 6] Require Ruby 1.9.3
-          package { ['ruby193']:
+          package { $extra_packages:
             ensure => 'installed',
           } ->
 
@@ -36,7 +44,6 @@ class razor::microkernel::compile inherits razor {
             source   => 'https://github.com/puppetlabs/razor-el-mk',
           } ->
 
-          # TODO template contains a bug specific to CentOS 6.5
           # Create installation script
           file { '/opt/build-microkernel.sh':
             ensure  => 'file',
@@ -51,14 +58,8 @@ class razor::microkernel::compile inherits razor {
 				    subscribe   => File['/opt/build-microkernel.sh'],
 				    refreshonly => true,
             timeout     => 3600,
+            #creates     => "/opt/razor-el-mk/pkg/microkernel-005.tar"
 				  }
-
-				  # TODO PUBLISH SCRIPT TO WEBSERVER !!!
-			    # cd /opt/razor-el-mk/pkg/
-			    # scp microkernel-005.tar 192.168.50.13:.     => Replace with Webserver !!
-
-			    # Option B - Pre-compiled MK
-			    # wget http://links.puppetlabs.com/razor-microkernel-latest.tar
         }
         default: {
           fail("Operating System (redhat) is not supported: ${::operatingsystem}")

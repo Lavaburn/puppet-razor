@@ -67,6 +67,7 @@ class razor (
 
   # Microkernel
   $microkernel_url          = $razor::params::microkernel_url,
+  $repo_store               = $razor::params::repo_store,
 ) inherits razor::params {
   # Validation
   validate_bool($enable_client, $enable_db, $enable_server, $compile_microkernel)
