@@ -10,6 +10,9 @@
 #
 class razor::db inherits razor {
   # Validation
+  if $::razor::database_password == undef {
+    fail('database_password is a required parameter!')
+  }
   validate_string($::razor::database_name, $::razor::database_username, $::razor::database_password)
 
   # Create User/Role/Database

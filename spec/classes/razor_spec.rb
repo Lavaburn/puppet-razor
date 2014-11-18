@@ -148,7 +148,7 @@ describe 'razor' do
 	  } }
 	  
     let(:params) { {     
-      :enable_tftp           => false,
+      #:enable_tftp           => false,
     } }
     #TFTP module has a bug that fails the spec test for non-debian OSes
   
@@ -159,7 +159,7 @@ describe 'razor' do
     it { should contain_class('razor::client') }
     it { should contain_class('razor::db') }
     it { should contain_class('razor::server') }
-    it { should_not contain_class('razor::tftp') }
+    it { should contain_class('razor::tftp') } # TFTP bug??
     it { should contain_class('razor::microkernel') }
     it { should contain_class('razor::microkernel::compile') }
       

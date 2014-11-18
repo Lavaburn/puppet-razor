@@ -53,7 +53,7 @@ class razor (
   $database_hostname        = 'localhost',
   $database_name            = 'razor_prod',
   $database_username        = 'razor',
-  $database_password,
+  $database_password        = undef,
 
   # Server
   $server_package_name      = $razor::params::server_package_name,
