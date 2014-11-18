@@ -18,19 +18,13 @@ class razor::microkernel inherits razor {
   archive { 'razor-microkernel':
     url               => $::razor::microkernel_url,
     target            => $::razor::repo_store,
+    # Required !
     extension         => 'tar',
-    timeout           => 3600, # 160 MB @ 384 kbps
+    # I don't want to create a subdirectory. Extract contents of tar direct to repo_store
+    # Tarball contains root dir called microkernel.
+    root_dir          => '.',
+    # 160 MB @ 384 kbps
+    timeout           => 3600,
     checksum          => false,
-  }
-
-  if $::razor::repo_store == $razor::params::repo_store {
-    # Archive will automatically create a folder before extracting !!!
-    # Because the tarball includes a root directory (microkernel) a dual folder can not be avoided.
-    # Result = $::razor::repo_store/razor-microkernel/microkernel
-
-    file { "${::razor::repo_store}/microkernel":
-      ensure  => link,
-      target  => "${::razor::repo_store}/razor-microkernel/microkernel",
-    }
   }
 }
