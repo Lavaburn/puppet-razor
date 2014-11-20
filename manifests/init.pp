@@ -113,4 +113,7 @@ class razor (
   if $compile_microkernel {
     contain razor::microkernel::compile
   }
+
+  # TODO Allow the setting of Razor API: PORT, IP ADDRESS (???) AND AUTHENTICATION
+  # => /etc/razor/api.yaml
 }

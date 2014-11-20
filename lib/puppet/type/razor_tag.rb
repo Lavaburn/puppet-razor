@@ -6,15 +6,10 @@ Puppet::Type.newtype(:razor_tag) do
   ensurable
   
   newparam(:name, :namevar => true) do
-    desc "The tag name"
-    
+    desc "The tag name"    
   end
       
   newproperty(:rule, :array_matching => :all) do
     desc "The tag rule (Array)"
-      
-#    def insync?(is)
-#      is.downcase == should.downcase
-#    end
   end
 end

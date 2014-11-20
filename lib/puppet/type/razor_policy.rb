@@ -6,78 +6,79 @@ Puppet::Type.newtype(:razor_policy) do
   ensurable
   
   newparam(:name, :namevar => true) do
-    desc "The policy name"
-    
+    desc "The policy name"    
   end
     
   newproperty(:repo) do
-    desc "The repository to install from"
-      
+    desc "The repository to install from"      
   end
 
   newproperty(:task) do
-    desc "The task to use to install the repo"
-      
+    desc "The task to use to install the repo"      
   end
       
   newproperty(:broker) do
-    desc "The broker to use after installation"
-      
+    desc "The broker to use after installation"      
   end
       
   newproperty(:hostname) do
-    desc "The hostname to set up (use ${id} inside)"
-      
+    desc "The hostname to set up (use ${id} inside)"      
   end
       
   newproperty(:root_password) do
-    desc "The root password to install with"
-      
+    desc "The root password to install with"      
   end
       
   newproperty(:max_count) do
-    desc "The maximum hosts to configure (set nil for unlimited)"
-      
+    desc "The maximum hosts to configure (set nil for unlimited)"      
   end
   
-  newproperty(:before) do
+  newproperty(:before_policy) do
     desc "The policy before this one"
-    #TODO EITHER/OR
     
     def insync?(is)
       true
     end
   end
   
-  newproperty(:after) do
+  newproperty(:after_policy) do
     desc "The policy after this one"
-    #TODO EITHER/OR
-    
+        
     def insync?(is)
       true
     end
   end
   
   newproperty(:node_metadata) do
-    desc "The node metadata [Hash]"
-      
+    desc "The node metadata [Hash]"      
   end
   
   newproperty(:tags, :array_matching => :all) do
-    desc "The tags to look for [Array]"
-      
+    desc "The tags to look for [Array]"      
   end
+  
+  newproperty(:enabled) do
+    desc "Policies can be enabled or disabled"
+    
+    newvalues(:true, :false)
+    defaultto(:true)
+  end
+  
+  autorequire(:razor_broker) do
+    self[:broker]
+  end
+  
+  autorequire(:razor_repo) do
+    self[:repo]
+  end
+    
+  autorequire(:razor_tag) do
+    self[:tags]
+  end
+  
+  validate do    
+    if self[:before_policy] != nil and self[:after_policy] != nil  then
+      raise(ArgumentError,"razor_policy can not define both before_policy and after_polciy.")
+    end
+  end 
 end
-
-#newvalue(:true)
-#newvalue(:false)
-
-#validate do |value|
-#  unless value =~ /^\w+/
-#    raise ArgumentError, "%s is not a valid user name" % value
-#  end
-#end
-
-#newvalues(:red, :green, :blue, :purple)
-
-#newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean)

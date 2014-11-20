@@ -20,13 +20,12 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
   end  
   
   def self.instances
-    # TODO Need credentials from puppet first  ???
     get_objects(:tags).collect do |object|
       new(object)
     end    
   end
   
-  # TODO TYPE SPECIFIC
+  # TYPE SPECIFIC
   def self.get_object(name, url)
     responseJson = get_json_from_url(url)    
 
@@ -38,10 +37,8 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
   end
   
   def self.get_tag(name)
-    # TODO
-    ip = '192.168.50.13'
-    port = '8080'
-    url = "http://#{ip}:#{port}/api/collections/tags/#{name}" 
+    rest = get_rest_info
+    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/tags/#{name}" 
     
     get_object(name, url)    
   end
@@ -55,12 +52,7 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
     post_command('create-tag', resourceHash)
   end
   
-  def update_tag            
-    # Rule
-    # TODO TEST RULES EQUAL? => not really required as it is the only attribute    
-      #.each_with_index {|item, index| hash[item] = index } 
-      #if @property_hash[:rule] != resource[:rule]       => Doens't work anymore ??
-    
+  def update_tag
     resourceHash = {                    
       :name => resource[:name],
       :rule => resource[:rule]

@@ -20,13 +20,12 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
   end  
 
   def self.instances
-    # TODO Need credentials from puppet first  ???
     get_objects(:brokers).collect do |object|
       new(object)
     end
   end
   
-  # TODO TYPE SPECIFIC
+  # TYPE SPECIFIC
   def self.get_object(name, url)
     responseJson = get_json_from_url(url)    
 
@@ -39,10 +38,8 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
   end
   
   def self.get_broker(name)
-    # TODO
-    ip = '192.168.50.13'
-    port = '8080'
-    url = "http://#{ip}:#{port}/api/collections/brokers/#{name}" 
+    rest = get_rest_info
+    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/brokers/#{name}" 
     
     get_object(name, url)    
   end

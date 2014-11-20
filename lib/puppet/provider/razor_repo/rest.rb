@@ -20,45 +20,49 @@ Puppet::Type.type(:razor_repo).provide :rest, :parent => Puppet::Provider::Rest 
   end  
 
   def self.instances
-    # TODO Need credentials from puppet first  ???
     get_objects(:repos).collect do |object|
       new(object)
     end
   end
   
-  # TODO TYPE SPECIFIC
+  # TYPE SPECIFIC
   def self.get_object(name, url)
-    responseJson = get_json_from_url(url)    
-
+    responseJson = get_json_from_url(url)  
+      
+    # Task returns the real object reference, rather than just the name
     {
       :name     => responseJson['name'],
       :iso_url  => responseJson['iso_url'],
       :url      => responseJson['url'],
-      :task     => responseJson['task']['name'],# Task returns the real object reference, rather than just the name
+      :task     => responseJson['task']['name'],
       :ensure   => :present
     }
   end
   
   def self.get_repo(name)
-    # TODO
-    ip = '192.168.50.13'
-    port = '8080'
-    url = "http://#{ip}:#{port}/api/collections/repos/#{name}" 
+    rest = get_rest_info
+    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/repos/#{name}" 
     
     get_object(name, url)    
   end
   
   private  
-  def create_repo
-    Puppet.debug("ISO URL = #{resource['iso_url']}")
-       
-    resourceHash = {                    
-      :name         => resource[:name],
-      'iso-url'     => resource[:iso_url],# To create: iso-url / after that Razor magically makes it a iso_url...
-      :task         => resource[:task],
-    }
-    # TODO Select iso_url of url !!
-    #:url       => resource['url'],
+  def create_repo    
+    if (resource[:iso_url] != nil)
+      # To create: iso-url / after that Razor magically makes it a iso_url...
+      resourceHash = {                    
+        :name         => resource[:name],
+        'iso-url'     => resource[:iso_url],
+        :task         => resource[:task],
+      }
+    else
+      resourceHash = {                    
+        :name   => resource[:name],
+        'url'   => resource[:url],
+        :task   => resource[:task],
+      }
+    end
+
     post_command('create-repo', resourceHash)
   end
   

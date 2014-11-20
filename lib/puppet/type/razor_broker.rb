@@ -6,17 +6,14 @@ Puppet::Type.newtype(:razor_broker) do
   ensurable
   
   newparam(:name, :namevar => true) do
-    desc "The broker name"
-    
+    desc "The broker name"    
   end
   
   newproperty(:broker_type) do
-    desc "The broker type"
-      
+    desc "The broker type"      
   end
   
   newproperty(:configuration) do
-    desc "The broker configuration (Hash)"
-      
+    desc "The broker configuration (Hash)"      
   end
 end
