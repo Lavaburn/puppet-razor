@@ -1,26 +1,34 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache License 2.0",
-  "summary": "Puppet module for managing PURPOSE",  
+  "summary": "Puppet module for managing PURPOSE",
   "source": "https://github.com/Lavaburn/puppet-razor",
   "project_page": "https://forge.puppetlabs.com/Lavaburn/razor",
   "issues_url": "https://github.com/Lavaburn/puppet-razor/issues",
-  "tags": ["razor", "provisioning"],
+  "tags": [
+    "razor",
+    "provisioning"
+  ],
   "operatingsystem_support": [
     {
-    "operatingsystem": "CentOS",
-    "operatingsystemrelease": [ "6.5" ]
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6.5"
+      ]
     },
     {
-    "operatingsystem": "Ubuntu",
-    "operatingsystemrelease": [ "10.04", "13.10" ]
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "13.10"
+      ]
     }
-   ],  
+  ],
   "dependencies": [
-    { 
-      "name": "puppetlabs/stdlib", 
+    {
+      "name": "puppetlabs/stdlib",
       "version_requirement": ">=4.0.0"
     }
   ]
