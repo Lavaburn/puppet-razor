@@ -1,11 +1,11 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache License 2.0",
-  "summary": "Puppet module for managing PURPOSE",
+  "summary": "Puppet module for managing (Puppetlabs) Razor",
   "source": "https://github.com/Lavaburn/puppet-razor",
-  "project_page": "https://forge.puppetlabs.com/Lavaburn/razor",
+  "project_page": "https://github.com/Lavaburn/puppet-razor",
   "issues_url": "https://github.com/Lavaburn/puppet-razor/issues",
   "tags": [
     "razor",
