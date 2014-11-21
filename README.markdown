@@ -24,18 +24,18 @@ Modules:
   * puppetlabs/apt (postgresql)
   * puppetlabs/concat (postgresql)
 - puppetlabs/vcsrepo (Optional)
-- puppetlabs/tftp (Optional)
+- [https://github.com/lavaburn/puppetlabs-tftp.git] (Optional)
   * puppetlabs/xinetd (tftp)
 - maestrodev/wget (Optional/tftp)
-- lavaburn/archive (Optional)
+- [https://github.com/lavaburn/puppet-archive.git] (Optional)
 
 * If you want to set up PostgreSQL config:
-  	- include 'posgresql::server'	[puppetlabs/postgresql]
+  	- `include 'posgresql::server'`	[puppetlabs/postgresql]
 * If you want to compile the Microkernel (on Fedora/CentOS/RHEL)
 	- puppetlabs/vcsrepo module 
 * If you want to set up TFTP boot files
-	- include 'wget'
-	- class { '::tftp': }		[puppetlabs/tftp]
+	- `include 'wget'`
+	- `class { '::tftp': }`		[puppetlabs/tftp]
 * If you want to download/extract a microkernel, 
 	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
 	- lavaburn/archive module	
@@ -113,7 +113,7 @@ razor_policy { 'install_ubuntu_on_hypervisor':
 - before_policy: The policy before this one
 - node_metadata: The node metadata [Hash]
 - tags: The tags to look for [Array]
-- provider: The specific backend to use for this `razor_broker` resource. 
+- provider: The specific backend to use for this `razor_policy` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
@@ -133,7 +133,7 @@ razor_repo { 'ubuntu-14.04.1':
 - iso_url: The URL of the ISO to download
 - url: The URL of a mirror (no downloads)
 - task: The default task to perform to install the OS
-- provider: The specific backend to use for this `razor_broker` resource. 
+- provider: The specific backend to use for this `razor_repo` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
@@ -150,7 +150,7 @@ razor_tag { 'small':
 - ensure: The basic property that the resource should be in.
           Valid values are `present`, `absent`.
 - rule: The tag rule (Array)   
-- provider: The specific backend to use for this `razor_broker` resource. 
+- provider: The specific backend to use for this `razor_tag` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:

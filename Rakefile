@@ -51,3 +51,9 @@ task :test => [
 	:metadata,
 	:spec,
 ]
+
+# Copied from puppet-blacksmith. Not using the Git push !!!
+desc "Release the Puppet module, doing a clean, build, tag, push and bump_commit."
+task :release => ['module:clean', 'build', 'module:tag', 'module:push', 'module:bump_commit'] do
+  puts "Don't forget to push your tags to remote git repo(s)"
+end

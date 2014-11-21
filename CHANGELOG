@@ -8,3 +8,11 @@
  - It can also set up a TFTP server and publish the 2 boot images
  - Finally, custom types are available for configuring the Razor Server (through the REST API)
 
+## [2014-11-22] Release 0.1.1
+### Summary:
+ Some beauty fixes - this was my first release to the Forge.
+
+### Features:
+  Updated: 
+  - README.markdown
+  - metadata.json
