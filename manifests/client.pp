@@ -20,30 +20,33 @@ class razor::client inherits razor {
         $ruby_package_version = '1.9.1'
         $ruby_package_name = "ruby${ruby_package_version}"
 
-				package { $ruby_package_name:
-				  ensure    => 'installed',
-				} -> Package[$::razor::client_package_name]
+        package { $ruby_package_name:
+          ensure    => 'installed',
+        } -> Package[$::razor::client_package_name]
 
         Package[$ruby_package_name] ->
-				exec { "set-ruby${ruby_package_version}-default":
-			    command     => "/usr/bin/update-alternatives --set ruby /usr/bin/ruby${ruby_package_version}",
-			    subscribe   => Package[$ruby_package_name],
-			    refreshonly => true,
-				} -> Package[$::razor::client_package_name]
+        exec { "set-ruby${ruby_package_version}-default":
+          command     => "/usr/bin/update-alternatives --set ruby /usr/bin/ruby${ruby_package_version}",
+          subscribe   => Package[$ruby_package_name],
+          refreshonly => true,
+        } -> Package[$::razor::client_package_name]
 
         Package[$ruby_package_name] ->
-				exec { "set-gem${ruby_package_version}-default":
+        exec { "set-gem${ruby_package_version}-default":
           command     => "/usr/bin/update-alternatives --set gem /usr/bin/gem${ruby_package_version}",
           subscribe   => Package[$ruby_package_name],
           refreshonly => true,
         } -> Package[$::razor::client_package_name]
       }
+	    default: {
+	      # No bugfixes required? => Test further
+	    }
     }
   }
 
   # Install the ruby gem
   package { $::razor::client_package_name:
-    provider  => 'gem',
-    ensure    => $::razor::client_package_version,
+    ensure   => $::razor::client_package_version,
+    provider => 'gem',
   }
 }

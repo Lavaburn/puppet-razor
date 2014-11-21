@@ -1,20 +1,12 @@
 {
   "name": "lavaburn-razor",
   "version": "0.1.0",
-  "author": "Nicolas Truyens",
+  "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache License 2.0",
   "project_page": "https://bitbucket.org/Lavaburn/puppet-razor",
   "summary": "Puppet module for managing PURPOSE",
   "dependencies": [
-    {"name":"puppetlabs/stdlib"},
-    {"name":"puppetlabs/postgresql"},
-    {"name":"puppetlabs/concat"},
-    {"name":"puppetlabs/vcsrepo"},
-    {"name":"puppetlabs/apt"},
-    {"name":"puppetlabs/tftp"},
-    {"name":"puppetlabs/xinetd"},
-    {"name":"maestrodev-wget","version_requirement":""},
-    {"name":"lavaburn/archive"}
+    {"name":"puppetlabs/stdlib"}
   ],
   "source": "https://bitbucket.org/Lavaburn/puppet-razor"
 }

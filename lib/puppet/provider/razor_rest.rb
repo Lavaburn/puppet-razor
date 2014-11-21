@@ -17,15 +17,20 @@ class Puppet::Provider::Rest < Puppet::Provider
   end
   
   def self.get_rest_info
-    # TODO SET UP IP/PORT/AUTH
-    # 1. Check for File /etc/razor/api.yaml
-      # LOAD FILE => settings
-    # 2. If file does not exist: 
-        
+    # Shiro Authentication is not (yet) configured. Authentication could possibly happen here?
+    
+    # IP Address:
+       # As long as the custom types are configured on the same host as razor server is configured, the IP will be localhost.
+       # I can not find any reasons why you would want the custom type to be configured on another host...
+    # Port: 
+      # The port config is very well hidden in torquebox (jboss) configuration. 
+      # It's very unlikely that it will be changed.    
+    
+    # If the above changes, read the below variables from a config file
+    
     ip = '127.0.0.1'
-    port = '8080'  
-    #TODO authentication details
-        
+    port = '8080'
+           
     { :ip   => ip,
       :port => port }
   end

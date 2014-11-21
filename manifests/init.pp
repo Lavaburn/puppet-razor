@@ -114,6 +114,5 @@ class razor (
     contain razor::microkernel::compile
   }
 
-  # TODO Allow the setting of Razor API: PORT, IP ADDRESS (???) AND AUTHENTICATION
-  # => /etc/razor/api.yaml
+  # Shiro Authentication is not (yet) implemented. See notes in lib/puppet/provider/razo_rest.rb if you implement it.
 }

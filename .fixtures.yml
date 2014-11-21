@@ -11,15 +11,9 @@ fixtures:
     vcsrepo:
       repo: "puppetlabs/vcsrepo"
       ref: "1.2.0"  
-#    apt:
-#      repo: "puppetlabs/apt"
-#      ref: "1.7.0"  
     concat:
       repo: "puppetlabs/concat"
       ref: "1.1.2"
-#    tftp:
-#      repo: "puppetlabs/tftp"
-#      ref: "0.2.2"  
     xinetd:
       repo: "puppetlabs/xinetd"
       ref: "1.3.1"
@@ -30,13 +24,10 @@ fixtures:
   repositories:
     archive:
       repo: "https://github.com/lavaburn/puppet-archive.git"
-      branch: "tar_support"
+      branch: "0.2.0-1"
     tftp:
       repo: "https://github.com/lavaburn/puppetlabs-tftp.git"
-      branch: "centos_support"
-#    nfs: 
-#      repo: "https://github.com/[USER]/[MODULE].git"
-#      branch: "[BRANCH]"
+      branch: "0.2.2-1"
 
   symlinks:
     razor: "#{source_dir}"

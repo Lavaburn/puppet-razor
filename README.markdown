@@ -43,19 +43,19 @@ Modules:
 ##Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
-	[https://github.com/TomPoulton/hiera-eyaml]
-	[https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
+  * [https://github.com/TomPoulton/hiera-eyaml]
+  * [https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
 
 Make sure to include all dependencies as per above.
 
 Also see the examples/profile.pp file for an example on how to set up dependencies.   
      
-     
+```
   class { 'razor':
     db_hostname => '127.0.0.1',
     db_password => 'notasecretpassword',
   } 
-
+```
 
 ##Reference
 
@@ -64,60 +64,60 @@ You should only use the 'razor' class.
 ### Types
 
 #### razor_broker
-broker_type: The broker type
-configuration: The broker configuration (Hash)
-ensure: The basic property that the resource should be in.
-  Valid values are `present`, `absent`.
-name: The broker name
-provider: The specific backend to use for this `razor_broker` resource. 
-          You will seldom need to specify this --- Puppet will usually
-          discover the appropriate provider for your platform.
-          Available providers are:
-  rest: REST provider for Razor broker
+- broker_type: The broker type
+- configuration: The broker configuration (Hash)
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
+- name: The broker name
+- provider: The specific backend to use for this `razor_broker` resource. 
+            You will seldom need to specify this --- Puppet will usually
+            discover the appropriate provider for your platform.
+            Available providers are:
+- rest: REST provider for Razor broker
 
 #### razor_policy
-after: The policy after this one
-before: The policy before this one
-broker: The broker to use after installation
-ensure: The basic property that the resource should be in.
-  Valid values are `present`, `absent`.
-hostname: The hostname to set up (use ${id} inside)
-max_count: The maximum hosts to configure (set nil for unlimited)
-name: The policy name
-node_metadata: The node metadata [Hash]
-provider: The specific backend to use for this `razor_broker` resource. 
-          You will seldom need to specify this --- Puppet will usually
-          discover the appropriate provider for your platform.
-          Available providers are:
-  rest: REST provider for Razor broker
-repo: The repository to install from
-root_password: The root password to install with
-tags: The tags to look for [Array]
-task: The task to use to install the repo
+- after_policy: The policy after this one
+- before_policy: The policy before this one
+- broker: The broker to use after installation
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
+- hostname: The hostname to set up (use ${id} inside)
+- max_count: The maximum hosts to configure (set nil for unlimited)
+- name: The policy name
+- node_metadata: The node metadata [Hash]
+- provider: The specific backend to use for this `razor_broker` resource. 
+            You will seldom need to specify this --- Puppet will usually
+            discover the appropriate provider for your platform.
+            Available providers are:
+- rest: REST provider for Razor broker
+- repo: The repository to install from
+- root_password: The root password to install with
+- tags: The tags to look for [Array]
+- task: The task to use to install the repo
 
 #### razor_repo
-ensure: The basic property that the resource should be in.
-  Valid values are `present`, `absent`.
-iso_url: The URL of the ISO to download
-name: The repository name
-provider: The specific backend to use for this `razor_broker` resource. 
-          You will seldom need to specify this --- Puppet will usually
-          discover the appropriate provider for your platform.
-          Available providers are:
-  rest: REST provider for Razor broker
-task: The default task to perform to install the OS
-url: The URL of a mirror (no downloads)
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
+- iso_url: The URL of the ISO to download
+- name: The repository name
+- provider: The specific backend to use for this `razor_broker` resource. 
+            You will seldom need to specify this --- Puppet will usually
+            discover the appropriate provider for your platform.
+            Available providers are:
+- rest: REST provider for Razor broker
+- task: The default task to perform to install the OS
+- url: The URL of a mirror (no downloads)
 
 #### razor_tag
-ensure: The basic property that the resource should be in.
-  Valid values are `present`, `absent`.
-name: The tag name
-provider: The specific backend to use for this `razor_broker` resource. 
-          You will seldom need to specify this --- Puppet will usually
-          discover the appropriate provider for your platform.
-          Available providers are:
-  rest: REST provider for Razor broker
-rule: The tag rule (Array)
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
+- name: The tag name
+- provider: The specific backend to use for this `razor_broker` resource. 
+            You will seldom need to specify this --- Puppet will usually
+            discover the appropriate provider for your platform.
+            Available providers are:
+- rest: REST provider for Razor broker
+- rule: The tag rule (Array)
 
 
 ##Compatibility

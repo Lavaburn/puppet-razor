@@ -52,14 +52,14 @@ class razor::microkernel::compile inherits razor {
           } ->
 
           # Run script
-				  exec { 'build-microkernel':
-				    cwd         => '/opt/razor-el-mk',
-				    command     => '/usr/bin/scl enable ruby193 /opt/build-microkernel.sh',
-				    subscribe   => File['/opt/build-microkernel.sh'],
-				    refreshonly => true,
+          exec { 'build-microkernel':
+            cwd         => '/opt/razor-el-mk',
+            command     => '/usr/bin/scl enable ruby193 /opt/build-microkernel.sh',
+            subscribe   => File['/opt/build-microkernel.sh'],
+            refreshonly => true,
             timeout     => 3600,
             #creates     => "/opt/razor-el-mk/pkg/microkernel-005.tar"
-				  }
+          }
         }
         default: {
           fail("Operating System (redhat) is not supported: ${::operatingsystem}")

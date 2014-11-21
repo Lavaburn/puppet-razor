@@ -1,7 +1,14 @@
-require 'spec_helper_rcs'
+require 'beaker-rspec'
 
 hosts.each do |host|
   # Using box with pre-installed Puppet !
+end
+
+def install_hiera_on(host, fixtures_dir)
+  files = [ 'hiera.yaml', 'hiera' ]
+  files.each do |file|
+    scp_to host, File.expand_path(File.join(fixtures_dir, file)), "/etc/puppet/#{file}"
+  end
 end
 
 RSpec.configure do |c|

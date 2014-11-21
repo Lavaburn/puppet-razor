@@ -31,7 +31,7 @@ class razor::tftp inherits razor {
   }
 
   # bootstrap.ipxe
-  wget::fetch { "http://${$::razor::server_hostname}:8080/api/microkernel/bootstrap":
+  wget::fetch { "http://${::razor::server_hostname}:8080/api/microkernel/bootstrap":
     destination => "${directory}/bootstrap.ipxe",
   } ->
 

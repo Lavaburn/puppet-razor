@@ -1,6 +1,10 @@
-## [DATE] Release 0.1.0
+## [2014-11-22] Release 0.1.0
 ### Summary:
- 
+ The initial release for this module. 
 
 ### Features:
+ - The module allows installation of Razor Server/Client/Database
+ - While not recommended, and with limited OS support, the module will allow the compilation of your own microkernel
+ - It can also set up a TFTP server and publish the 2 boot images
+ - Finally, custom types are available for configuring the Razor Server (through the REST API)
 

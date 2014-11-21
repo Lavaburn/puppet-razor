@@ -16,15 +16,15 @@ class razor::microkernel inherits razor {
   include archive::prerequisites
 
   archive { 'razor-microkernel':
-    url               => $::razor::microkernel_url,
-    target            => $::razor::repo_store,
+    url       => $::razor::microkernel_url,
+    target    => $::razor::repo_store,
     # Required !
-    extension         => 'tar',
+    extension => 'tar',
     # I don't want to create a subdirectory. Extract contents of tar direct to repo_store
     # Tarball contains root dir called microkernel.
-    root_dir          => '.',
+    root_dir  => '.',
     # 160 MB @ 384 kbps
-    timeout           => 3600,
-    checksum          => false,
+    timeout   => 3600,
+    checksum  => false,
   }
 }
