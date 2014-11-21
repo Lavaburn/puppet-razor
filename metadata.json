@@ -6,7 +6,7 @@
   "summary": "Puppet module for managing PURPOSE",  
   "source": "https://bitbucket.org/Lavaburn/puppet-razor",
   "project_page": "https://forge.puppetlabs.com/lavaburn/razor",
-  "issues_url": "https://bitbucket.org/Lavaburn/puppet-razor",
+  "issues_url": "https://bitbucket.org/Lavaburn/puppet-razor/issues",
   "tags": ["razor", "provisioning"],
   "operatingsystem_support": [
     {
