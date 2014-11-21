@@ -1,12 +1,12 @@
 {
-  "name": "lavaburn-razor",
+  "name": "Lavaburn-razor",
   "version": "0.1.0",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache License 2.0",
   "summary": "Puppet module for managing PURPOSE",  
-  "source": "https://bitbucket.org/Lavaburn/puppet-razor",
-  "project_page": "https://forge.puppetlabs.com/lavaburn/razor",
-  "issues_url": "https://bitbucket.org/Lavaburn/puppet-razor/issues",
+  "source": "https://github.com/Lavaburn/puppet-razor",
+  "project_page": "https://forge.puppetlabs.com/Lavaburn/razor",
+  "issues_url": "https://github.com/Lavaburn/puppet-razor/issues",
   "tags": ["razor", "provisioning"],
   "operatingsystem_support": [
     {
