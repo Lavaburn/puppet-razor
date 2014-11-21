@@ -8,7 +8,7 @@
 4. [Reference](#reference)
 5. [Compatibility](#compatibility)
 6. [Testing](#testing)
-7. [Copyright] (#copyright)
+7. [Copyright](#copyright)
 
 ##Overview
 
@@ -21,11 +21,11 @@ The Database should be postgres >= 9.1
 Modules:
 - puppetlabs/stdlib (REQUIRED)
 - puppetlabs/postgresql (Optional)
-	- puppetlabs/apt (postgresql)
-	- puppetlabs/concat (postgresql)
+  * puppetlabs/apt (postgresql)
+  * puppetlabs/concat (postgresql)
 - puppetlabs/vcsrepo (Optional)
 - puppetlabs/tftp (Optional)
-	- puppetlabs/xinetd (tftp)
+  * puppetlabs/xinetd (tftp)
 - maestrodev/wget (Optional/tftp)
 - lavaburn/archive (Optional)
 
@@ -43,8 +43,8 @@ Modules:
 ##Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
-  * [https://github.com/TomPoulton/hiera-eyaml]
-  * [https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
+* [https://github.com/TomPoulton/hiera-eyaml]
+* [https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
 
 Make sure to include all dependencies as per above.
 
@@ -64,67 +64,103 @@ You should only use the 'razor' class.
 ### Types
 
 #### razor_broker
+```
+razor_broker { 'puppet-dev':
+  ensure        => 'present',
+  broker_type   => 'puppet',
+  configuration => {
+    'server'      => 'puppet',
+    'environment' => 'dev'
+  },
+}
+```
+- name: The broker name
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
 - broker_type: The broker type
 - configuration: The broker configuration (Hash)
-- ensure: The basic property that the resource should be in.
-          Valid values are `present`, `absent`.
-- name: The broker name
 - provider: The specific backend to use for this `razor_broker` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
-- rest: REST provider for Razor broker
+  * rest: REST provider for Razor broker
 
 #### razor_policy
-- after_policy: The policy after this one
-- before_policy: The policy before this one
-- broker: The broker to use after installation
+```
+razor_policy { 'install_ubuntu_on_hypervisor':
+  ensure        => 'present',
+  repo          => 'ubuntu-14.04.1',
+  task          => 'ubuntu',
+  broker        => 'puppet-dev',
+  hostname      => 'host${id}.test.com',
+  root_password => 't3mporary',
+  max_count     =>  undef,
+  before_policy => 'policy0',
+  node_metadata => {},
+  tags          => ['small'],
+}
+```
+- name: The policy name
 - ensure: The basic property that the resource should be in.
           Valid values are `present`, `absent`.
+- repo: The repository to install from
+- task: The task to use to install the repo
+- broker: The broker to use after installation
 - hostname: The hostname to set up (use ${id} inside)
+- root_password: The root password to install with
 - max_count: The maximum hosts to configure (set nil for unlimited)
-- name: The policy name
+- after_policy: The policy after this one
+- before_policy: The policy before this one
 - node_metadata: The node metadata [Hash]
+- tags: The tags to look for [Array]
 - provider: The specific backend to use for this `razor_broker` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
-- rest: REST provider for Razor broker
-- repo: The repository to install from
-- root_password: The root password to install with
-- tags: The tags to look for [Array]
-- task: The task to use to install the repo
+  * rest: REST provider for Razor broker
 
 #### razor_repo
+```
+razor_repo { 'ubuntu-14.04.1':
+  ensure  => 'present',
+  iso_url => 'http://releases.ubuntu.com/14.04.1/ubuntu-14.04.1-server-amd64.iso',
+  task    => 'ubuntu',
+}
+```
+- name: The repository name
 - ensure: The basic property that the resource should be in.
           Valid values are `present`, `absent`.
 - iso_url: The URL of the ISO to download
-- name: The repository name
+- url: The URL of a mirror (no downloads)
+- task: The default task to perform to install the OS
 - provider: The specific backend to use for this `razor_broker` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
-- rest: REST provider for Razor broker
-- task: The default task to perform to install the OS
-- url: The URL of a mirror (no downloads)
+  * rest: REST provider for Razor broker
 
 #### razor_tag
+```
+razor_tag { 'small':
+  ensure => 'present',
+  rule   => ['=', ['fact', 'processorcount'], '1']
+}
+```
+- name: The tag name
 - ensure: The basic property that the resource should be in.
           Valid values are `present`, `absent`.
-- name: The tag name
+- rule: The tag rule (Array)   
 - provider: The specific backend to use for this `razor_broker` resource. 
             You will seldom need to specify this --- Puppet will usually
             discover the appropriate provider for your platform.
             Available providers are:
-- rest: REST provider for Razor broker
-- rule: The tag rule (Array)
-
+  * rest: REST provider for Razor broker
 
 ##Compatibility
 
 This module has been tested with:
-- Puppet 3.7.3 - Ruby 1.9.3 - Ubuntu 12.04
-- Puppet 3.7.3 - Ruby 1.8.7 - CentOS 6.3
+* Puppet 3.7.3 - Ruby 1.9.3 - Ubuntu 12.04
+* Puppet 3.7.3 - Ruby 1.8.7 - CentOS 6.3
 
 * compile_microkernel can only work on RHEL/CentOS/Fedora
 * enable_server requires Postgres >= 9.1
