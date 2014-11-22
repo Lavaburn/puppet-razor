@@ -16,4 +16,8 @@ Puppet::Type.newtype(:razor_broker) do
   newproperty(:configuration) do
     desc "The broker configuration (Hash)"      
   end
+  
+  autorequire(:class) do
+    'razor'
+  end
 end

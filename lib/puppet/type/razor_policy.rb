@@ -76,6 +76,10 @@ Puppet::Type.newtype(:razor_policy) do
     self[:tags]
   end
   
+  autorequire(:class) do
+    'razor'
+  end
+  
   validate do    
     if self[:before_policy] != nil and self[:after_policy] != nil  then
       raise(ArgumentError,"razor_policy can not define both before_policy and after_polciy.")

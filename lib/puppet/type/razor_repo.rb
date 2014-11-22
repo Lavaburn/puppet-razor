@@ -30,4 +30,8 @@ Puppet::Type.newtype(:razor_repo) do
        raise(ArgumentError,"razor_repo must define either iso_url (download) or url (link)")
      end
    end 
+  
+   autorequire(:class) do
+     'razor'
+   end
 end

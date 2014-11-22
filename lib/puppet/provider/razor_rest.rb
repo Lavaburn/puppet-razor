@@ -75,7 +75,7 @@ class Puppet::Provider::Rest < Puppet::Provider
   def post_command(command, resourceHash)     
     Puppet.debug("REST API => API: #{command}")    
     
-    rest = get_rest_info
+    rest = self.class.get_rest_info
     url = "http://#{rest[:ip]}:#{rest[:port]}/api/commands/#{command}"
     
     begin
