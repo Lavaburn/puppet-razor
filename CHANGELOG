@@ -16,3 +16,12 @@
   Updated: 
   - README.markdown
   - metadata.json
+  
+## [2014-11-23] Release 0.1.2
+### Summary:
+ Serious bugfixes
+
+### Features:
+  - Added autorequire to Razor Class
+  - Found a bug on post_command that was introduced when adding the get_rest_info method
+  
