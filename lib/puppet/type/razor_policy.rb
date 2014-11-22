@@ -30,7 +30,9 @@ Puppet::Type.newtype(:razor_policy) do
   end
       
   newproperty(:max_count) do
-    desc "The maximum hosts to configure (set nil for unlimited)"      
+    desc "The maximum hosts to configure (set nil for unlimited)"
+    
+    newvalues(/^\d+$/)
   end
   
   newproperty(:before_policy) do

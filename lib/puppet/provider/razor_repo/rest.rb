@@ -34,7 +34,7 @@ Puppet::Type.type(:razor_repo).provide :rest, :parent => Puppet::Provider::Rest 
       :name     => responseJson['name'],
       :iso_url  => responseJson['iso_url'],
       :url      => responseJson['url'],
-      :task     => responseJson['task']['name'],
+      :task     => (responseJson['task']==nil)?nil:responseJson['task']['name'],
       :ensure   => :present
     }
   end

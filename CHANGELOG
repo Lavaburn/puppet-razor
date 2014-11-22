@@ -27,10 +27,11 @@
   
 ## [2014-11-22] Release 0.1.3
 ### Summary:
- Small bugfix
+ Small bugfixes
  Additional comments regarding dependencies
 
 ### Features:
   - REST provider warning if Post fails did not have the correct IP/port variable
   - Autorequire commented, added comments to README and test/types.pp to make sure dependencies are included (requiring less runs)
   - README comment: still 2 runs required due to long startup time of the Razor service
+  - Extra validation doe numeric entries, null-pointers in data

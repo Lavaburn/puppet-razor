@@ -38,12 +38,12 @@ Puppet::Type.type(:razor_policy).provide :rest, :parent => Puppet::Provider::Res
     # Broker returns the real object reference, rather than just the name
     {
       :name           => responseJson['name'],        
-      :repo           => responseJson['repo']['name'],
-      :task           => responseJson['task']['name'],
-      :broker         => responseJson['broker']['name'],
+      :repo           => (responseJson['repo']==nil)?nil:responseJson['repo']['name'],
+      :task           => (responseJson['task']==nil)?nil:responseJson['task']['name'],
+      :broker         => (responseJson['broker']==nil)?nil:responseJson['broker']['name'],
       :hostname       => responseJson['configuration']['hostname_pattern'],
       :root_password  => responseJson['configuration']['root_password'],
-      :max_count      => (responseJson['max_count']==nil)?nil:responseJson['max_count'].to_s,        
+      :max_count      => responseJson['max_count'].to_s,
       :node_metadata  => (responseJson['node_metadata']==nil)?{}:responseJson['node_metadata'],
       :tags           => tags,
       :enabled        => responseJson['enabled']?(:true):(:false),
@@ -68,7 +68,7 @@ Puppet::Type.type(:razor_policy).provide :rest, :parent => Puppet::Provider::Res
       :broker         => resource[:broker],
       :hostname       => resource[:hostname],
       :root_password  => resource[:root_password],
-      'max-count'     => (resource[:max_count]==nil)?nil:resource[:max_count].to_i,
+      'max-count'     => resource[:max_count].to_i,
       :node_metadata  => resource[:node_metadata],
       :tags           => resource[:tags],
     }
