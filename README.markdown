@@ -57,6 +57,26 @@ Also see the examples/profile.pp file for an example on how to set up dependenci
   } 
 ```
 
+Unfortunately Puppet does not support autorequire for classes. Hence a dependency for each of the custom types must be set to Class['razor'].
+`Class['razor'] -> razor_broker...`
+```
+razor_broker { 'name':
+  require => Class['razor'],
+  ...
+}
+``` 
+```
+Razor_repo { 
+  require => Class['razor'],
+  ...
+}
+``` 
+
+Note: you will probably need to run it twice anyway as the razor server service is very slow to start.
+API calls will only start working a few minutes after the service starting.
+[suggestions welcome to fix that]
+
+
 ##Reference
 
 You should only use the 'razor' class.

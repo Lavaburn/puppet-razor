@@ -12,8 +12,9 @@ Puppet::Type.newtype(:razor_tag) do
   newproperty(:rule, :array_matching => :all) do
     desc "The tag rule (Array)"
   end
-  
-  autorequire(:class) do
-    'razor'
-  end
+
+  # This is not support by Puppet (<= 3.7)...
+#  autorequire(:class) do
+#    'razor'
+#  end
 end

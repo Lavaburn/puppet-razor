@@ -31,7 +31,9 @@ Puppet::Type.newtype(:razor_repo) do
      end
    end 
   
-   autorequire(:class) do
-     'razor'
-   end
+
+  # This is not support by Puppet (<= 3.7)...
+#   autorequire(:class) do
+#     'razor'
+#   end
 end

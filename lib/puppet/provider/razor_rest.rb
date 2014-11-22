@@ -1,6 +1,6 @@
 begin
-  require 'rest-client'
-  require 'json'
+  require 'rest-client' if Puppet.features.rest_client?
+  require 'json' if Puppet.features.json?
 rescue LoadError => e
   Puppet.info "Razor Puppet module requires 'rest-client' and 'json' ruby gems."
 end
@@ -81,8 +81,8 @@ class Puppet::Provider::Rest < Puppet::Provider
     begin
       RestClient.post url, resourceHash.to_json, :content_type => :json
     rescue => e
-      Puppet.debug "Razor REST response: "+e
-      Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{ip}:#{port})"
+      Puppet.debug "Razor REST response: "+e.inspect
+      Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{rest[:ip]}:#{rest[:port]})"
     end       
   end
   
@@ -90,7 +90,7 @@ class Puppet::Provider::Rest < Puppet::Provider
     begin
       response = RestClient.get url
     rescue => e
-      Puppet.debug "Razor REST response: "+e
+      Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
     end
   

@@ -74,11 +74,12 @@ Puppet::Type.newtype(:razor_policy) do
     
   autorequire(:razor_tag) do
     self[:tags]
-  end
-  
-  autorequire(:class) do
-    'razor'
-  end
+  end  
+
+  # This is not support by Puppet (<= 3.7)...
+#  autorequire(:class) do
+#    'razor'
+#  end
   
   validate do    
     if self[:before_policy] != nil and self[:after_policy] != nil  then
