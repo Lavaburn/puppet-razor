@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<installation>
+    <keymap>us</keymap>
+	<timezone>Africa/Juba</timezone> 
+	<time-config-method>ntp</time-config-method>
+ 	<ntp-server>0.pool.ntp.org</ntp-server>
+	<root-password><%= node.root_password %></root-password>
+    <admin-interface name="eth0" proto="dhcp" />
+	<name-server>41.207.96.72</name-server>
+	<name-server>8.8.4.4</name-server>
+	<primary-disk gueststorage="no">sda</primary-disk>	
+	<source type="url"><%= repo_url %></source>
+	<hostname><%= node.hostname %></hostname>
+	<script stage="installation-complete" type="url"><%= file_url("postinstall") %></script>
+</installation>

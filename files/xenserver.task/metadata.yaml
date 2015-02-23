@@ -1,0 +1,5 @@
+---
+description: XenServer 6 Installer
+label: XenServer 6
+os: XenServer
+os_version: 6

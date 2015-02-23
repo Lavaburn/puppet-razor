@@ -24,6 +24,7 @@ class razor::microkernel::compile inherits razor {
           $install_realpath = true
           # TODO - check CentOS 5, 7, Fedora 19, 20, RHEL 5, 6, 7 ?
 
+# TODO NOT IN V7 ... => latest 006 version requires ruby 2.0.0 anyway
           # Action Chain
           file { '/etc/yum.repos.d/epel.repo':
             content => template('razor/epel.repo.erb'),
@@ -36,6 +37,10 @@ class razor::microkernel::compile inherits razor {
           package { $extra_packages:
             ensure => 'installed',
           } ->
+# TODO NOT IN V7
+
+# TODO bundle => gem install bundler
+# /usr/local/bin/bundle
 
           # Download git repository
           vcsrepo { '/opt/razor-el-mk':
