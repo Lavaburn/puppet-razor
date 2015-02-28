@@ -1,0 +1,111 @@
+#!/bin/bash
+# Direct copy from the Puppet Razor repository. Should send a merge request at some point...
+
+<% require 'shellwords' %>
+set -u
+set -e
+
+# Some utility functions.
+fail() { echo >&2 "$@"; exit 1; }
+warn() { echo >&2 "$@"; }
+cmd()  { hash "$1" >&/dev/null; } # portable 'which'
+
+
+# Figure out which package installer is available and, consequently, which OS
+# family we are running on.  Then get `lsb_release` installed on
+# this platform.
+#
+# Thankfully, we don't care which variant we are on because they are uniformly
+# enough structured to make sense.
+if cmd lsb_release; then
+    :                           # nothing to do
+elif cmd apt-get; then
+    # All the distributions I am familiar with inherited this package name
+    # from Debian itself.
+    apt-get -y install lsb-release
+    apt_install
+elif cmd yum; then
+    # We try the second path just in case some distribution comes up with the
+    # brilliant idea that this needs to work before `/usr` can be mounted or
+    # something akin to that.
+    #
+    # This installs a lot of potentially undesirable packages on EL5 systems.
+    # Sorry about that -- take it up with your upstream.  EL6+ improve that.
+    yum -y install /usr/bin/lsb_release || \
+        yum -y install /bin/lsb_release || \
+        fail "neither /usr/bin/lsb_release or /bin/lsb_release found with yum!"
+else
+    fail "neither yum or apt are installed, so I can't figure out what next!"
+fi
+
+
+# Now we have that, we can install our platform specific package to define
+# the repositories.  Thankfully this is also pretty damn simple to get right.
+# In this case we don't skip installation even if the package was already
+# present, since the tool should handle that, and it may gather updates as a
+# consequence of taking the action.
+
+# This part has been altered to always expect xenserver and go from there...
+flavour="$(lsb_release -i | cut -f 2 | tr '[:upper:]' '[:lower:]')"
+case "${flavour}" in
+    xenserver)
+        release="$(lsb_release -r | cut -f2 | cut -d. -f1)"
+        case "$release" in
+            6)  wget http://dl.fedoraproject.org/pub/epel/5/$(uname -i)/epel-release-5-4.noarch.rpm
+				rpm -Uvh epel-release-5-4.noarch.rpm
+				wget https://yum.puppetlabs.com/el/5/products/i386/puppetlabs-release-5-7.noarch.rpm
+				rpm -Uvh puppetlabs-release-5-7.noarch.rpm
+				sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Base.repo         
+				yum -y install puppet-3.2.3-1.el5   
+				
+            *) fail "sorry, don't know how release ${release} works!" ;;
+        esac
+               
+      #  rpm -q puppetlabs-release || \
+      #      rpm -ihv "${url}"     || \
+      #      fail "unable to install the EL repository data file"																TODO
+            
+        ;;
+    *)
+        fail "I expected xenserver and got a different flavour distribution: '${flavour}'."
+        ;;
+esac
+
+
+<% unless broker.empty? %>
+# Now, configuration.  Much as I love the idea of editing an ini file with
+# basic Unix tools like sed and awk, this seems much less worse, even if it
+# puts a puppet module you might not expect into place on disk.
+puppet module install puppetlabs/inifile
+
+# Update the ini file with the resource tool.
+<% broker.each do |setting, value| %>
+puppet resource ini_setting ensure=present path=/etc/puppet/puppet.conf section=main setting=<%= setting.shellescape %> value=<%= value.shellescape %>
+<% end %>
+<% end %>
+
+# For debugging, just in case, dump out the modified confirmation file.
+echo ====================[ /etc/puppet/puppet.conf ]=========================
+cat /etc/puppet/puppet.conf
+echo ========================================================================
+
+# Finally, set Puppet to auto-start, and run the daemon.
+case "${flavour}" in
+    xenserver)
+        chkconfig puppet on
+        service puppet start
+        ;;
+
+    *)
+        fail "I expected xenserver and got a different flavour distribution: '${flavour}'."
+        ;;
+esac
+
+# Log that the broker is finished.
+if cmd curl; then
+    curl -sL "<%= stage_done_url %>" || fail "curl failed to log broker completion"
+elif cmd wget; then
+    wget -qO- "<%= stage_done_url %>" || fail "wget failed to log broker completion" &> /dev/null
+else
+    warn "neither curl nor wget installed; cannot log completion of broker"
+fi
