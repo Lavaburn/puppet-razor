@@ -101,11 +101,12 @@ case "${flavour}" in
         ;;
 esac
 
+# DOES NOT WORK !! ERB does not recognize the helper functions in this stage?
 # Log that the broker is finished.
-if cmd curl; then
-    curl -sL "<%= log_url("puppet installed", "info") %>" || fail "curl failed to log broker completion"
-elif cmd wget; then
-    wget -qO- "<%= log_url("puppet installed", "info") %>" || fail "wget failed to log broker completion" &> /dev/null
-else
-    warn "neither curl nor wget installed; cannot log completion of broker"
-fi
+#if cmd curl; then
+#    curl -sL "<%= log_url("puppet installed", "info") %>" || fail "curl failed to log broker completion"
+#elif cmd wget; then
+#    wget -qO- "<%= log_url("puppet installed", "info") %>" || fail "wget failed to log broker completion" &> /dev/null
+#else
+#    warn "neither curl nor wget installed; cannot log completion of broker"
+#fi
