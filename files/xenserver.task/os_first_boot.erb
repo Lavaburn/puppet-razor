@@ -14,7 +14,8 @@ EOF
 
 sed -i '/razor_os_first_boot/d' /etc/rc.d/rc.local
 
-wget <%= broker_install_url %> | /bin/bash			# TODO FOUT !!! 500 ISE
+wget <%= broker_install_url %> -O /tmp/install_broker.sh
+/bin/bash /tmp/install_broker.sh
 
 <%= render_template("store_ip") %> 
 
