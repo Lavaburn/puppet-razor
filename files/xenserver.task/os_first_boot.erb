@@ -1,6 +1,6 @@
 <%# -*- shell-script -*- %>
 
-exec >> /var/log/razor2.log 2>&1
+exec >> /var/log/razor.log 2>&1
 
 echo "Starting os_first_boot"
 wget <%= log_url("os_first_boot start", "info") %>

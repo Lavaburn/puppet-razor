@@ -56,7 +56,7 @@ case "${flavour}" in
 				wget https://yum.puppetlabs.com/el/5/products/i386/puppetlabs-release-5-7.noarch.rpm
 				rpm -Uvh puppetlabs-release-5-7.noarch.rpm
 				sed -i 's/enabled=0/enabled=1/g' /etc/yum.repos.d/CentOS-Base.repo         
-				yum -y install puppet-3.2.3-1.el5   
+				yum -y install puppet-3.2.3-1.el5   ;;
 				
             *) fail "sorry, don't know how release ${release} works!" ;;
         esac
@@ -85,9 +85,12 @@ puppet resource ini_setting ensure=present path=/etc/puppet/puppet.conf section=
 <% end %>
 
 # For debugging, just in case, dump out the modified confirmation file.
-echo ====================[ /etc/puppet/puppet.conf ]=========================
-cat /etc/puppet/puppet.conf
-echo ========================================================================
+#echo ====================[ /etc/puppet/puppet.conf ]=========================
+#cat /etc/puppet/puppet.conf
+#echo ========================================================================
+
+# TODO !! TEMPORARY FIX
+echo "172.20.110.11 	puppet.rcswimax.com 	puppet" >> /etc/hosts
 
 # Finally, set Puppet to auto-start, and run the daemon.
 case "${flavour}" in
