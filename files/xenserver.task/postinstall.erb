@@ -7,7 +7,7 @@
 exec >> $1/var/log/razor.log 2>&1
 
 echo "Starting post_install"
-wget <%= log_url("postinstall start") %>
+wget <%= log_url("postinstall start", "info") %>
 
 wget <%= file_url("os_first_boot") %> -O $1/root/razor_os_first_boot.sh 
 
@@ -17,7 +17,7 @@ if [ ! -f $1/etc/rc.d/rc.local ]; then
   chmod a+x $1/etc/rc.d/rc.local
 fi
 
-echo bash $1/root/razor_os_first_boot.sh >> $1/etc/rc.d/rc.local
+echo "bash /root/razor_os_first_boot.sh" >> $1/etc/rc.d/rc.local
 chmod +x $1/root/razor_os_first_boot.sh
 
 # Finish Installation and reboot

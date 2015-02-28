@@ -1,9 +1,9 @@
 <%# -*- shell-script -*- %>
 
-exec >> $1/var/log/razor2.log 2>&1
+exec >> /var/log/razor2.log 2>&1
 
 echo "Starting os_first_boot"
-wget <%= log_url("os_first_boot start") %>
+wget <%= log_url("os_first_boot start", "info") %>
 
 cat <<EOF > /etc/motd
 Installed by Razor using <%= task.label %> - <%= task.description %>
@@ -14,10 +14,8 @@ EOF
 
 sed -i '/razor_os_first_boot/d' /etc/rc.d/rc.local
 
-wget <%= broker_install_url %> | /bin/bash
+wget <%= broker_install_url %> | /bin/bash			# TODO FOUT !!! 500 ISE
 
-<%= render_template("store_ip") %>
+<%= render_template("store_ip") %> 
 
-<%= render_template("os_complete") %>
-
-wget <%= log_url("os_first_boot finish") %>
+wget <%= log_url("os_first_boot finish", "info") %>
