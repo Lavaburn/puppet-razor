@@ -18,4 +18,4 @@ echo bash /root/razor_os_first_boot.sh >> /etc/rc.d/rc.local
 chmod +x /root/razor_os_first_boot.sh
 
 # Finish Installation and reboot
-curl -s <%= stage_done_url("postinstall") %>
+wget <%= stage_done_url("finished") %>
