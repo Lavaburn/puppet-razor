@@ -1,13 +1,21 @@
 #!/bin/bash
 
+# This script is automatically called by answerfile unattended installer.
+
 exec >> /var/log/razor.log 2>&1
 
 echo "Starting post_install"
 
-# Wait for network to come up when using NetworkManager.
+curl -s -o /root/razor_os_first_boot.sh <%= file_url("os_first_boot") %>
 
-<%= render_template("os_complete") %>
+# Run razor_os_first_boot.sh on next boot via rc.local
+if [ ! -f /etc/rc.d/rc.local ]; then
+  touch /etc/rc.d/rc.local
+  chmod a+x /etc/rc.d/rc.local
+fi
 
-# We are done
-# curl -s <%= stage_done_url("finished") %>
-wget <%= stage_done_url("finished") %>
+echo bash /root/razor_os_first_boot.sh >> /etc/rc.d/rc.local
+chmod +x /root/razor_os_first_boot.sh
+
+# Finish Installation and reboot
+curl -s <%= stage_done_url("postinstall") %>

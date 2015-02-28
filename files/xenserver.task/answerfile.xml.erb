@@ -11,5 +11,5 @@
 	<primary-disk gueststorage="no">sda</primary-disk>	
 	<source type="url"><%= repo_url %></source>
 	<hostname><%= node.hostname %></hostname>
-	<script stage="installation-complete" type="url"><%= file_url("postinstall") %></script>
+	<script stage="filesystem-populated" type="url"><%= file_url("postinstall") %></script>
 </installation>
