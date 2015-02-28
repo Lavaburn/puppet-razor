@@ -1,21 +1,24 @@
 #!/bin/bash
 
 # This script is automatically called by answerfile unattended installer.
+# Mounted Disk - Root directory = $1
+# Supported URL GET = wget
 
-exec >> /var/log/razor.log 2>&1
+exec >> $1/var/log/razor.log 2>&1
 
 echo "Starting post_install"
+wget <%= log_url("postinstall start") %>
 
-curl -s -o /root/razor_os_first_boot.sh <%= file_url("os_first_boot") %>
+wget <%= file_url("os_first_boot") %> -O $1/root/razor_os_first_boot.sh 
 
 # Run razor_os_first_boot.sh on next boot via rc.local
-if [ ! -f /etc/rc.d/rc.local ]; then
-  touch /etc/rc.d/rc.local
-  chmod a+x /etc/rc.d/rc.local
+if [ ! -f $1/etc/rc.d/rc.local ]; then
+  touch $1/etc/rc.d/rc.local
+  chmod a+x $1/etc/rc.d/rc.local
 fi
 
-echo bash /root/razor_os_first_boot.sh >> /etc/rc.d/rc.local
-chmod +x /root/razor_os_first_boot.sh
+echo bash $1/root/razor_os_first_boot.sh >> $1/etc/rc.d/rc.local
+chmod +x $1/root/razor_os_first_boot.sh
 
 # Finish Installation and reboot
 wget <%= stage_done_url("finished") %>
