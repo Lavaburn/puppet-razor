@@ -60,11 +60,6 @@ case "${flavour}" in
 				
             *) fail "sorry, don't know how release ${release} works!" ;;
         esac
-               
-      #  rpm -q puppetlabs-release || \
-      #      rpm -ihv "${url}"     || \
-      #      fail "unable to install the EL repository data file"																TODO
-            
         ;;
     *)
         fail "I expected xenserver and got a different flavour distribution: '${flavour}'."
@@ -89,9 +84,7 @@ puppet resource ini_setting ensure=present path=/etc/puppet/puppet.conf section=
 #cat /etc/puppet/puppet.conf
 #echo ========================================================================
 
-# TODO !! TEMPORARY FIX
-echo "172.20.110.11 	puppet.rcswimax.com 	puppet" >> /etc/hosts
-
+# Deleted broken code and unnecessary code.
 # Finally, set Puppet to auto-start, and run the daemon.
 case "${flavour}" in
     xenserver)
