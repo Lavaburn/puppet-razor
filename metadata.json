@@ -1,6 +1,6 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache License 2.0",
   "summary": "Puppet module for managing (Puppetlabs) Razor",
