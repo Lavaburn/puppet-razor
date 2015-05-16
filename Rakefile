@@ -23,19 +23,26 @@ exclude_paths = [
 ]
 
 
-# Puppet Lint config 
-PuppetLint.configuration.relative = true
-PuppetLint.configuration.fail_on_warnings = true
-PuppetLint.configuration.with_context = true
-
-PuppetLint.configuration.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-
-PuppetLint.configuration.send("disable_80chars") 
-PuppetLint.configuration.send("class_inherits_from_params_class") 
-           # 'class_parameter_defaults', ''
-
-PuppetLint.configuration.ignore_paths = exclude_paths # TODO - Does not work !!
+# Settings for syntax checker
 PuppetSyntax.exclude_paths = exclude_paths
+
+
+# Overwrite default lint task
+Rake::Task[:lint].clear
+# Puppet Lint config
+PuppetLint::RakeTask.new :lint do |config|
+  #config.relative = true           # BUG in 1.1.0 - does not work ?  
+  config.with_context = true  
+  config.fail_on_warnings = false
+  
+  config.fix = false                # TODO does not actually fix anything
+  
+  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
+  
+  config.disable_checks = [ "80chars", "class_inherits_from_params_class" ] # class_parameter_defaults
+    
+  config.ignore_paths = exclude_paths
+end
 
 
 # Extra Tasks
@@ -47,7 +54,8 @@ end
 desc "Run syntax, lint, and spec tests."
 task :test => [
 	:syntax,
-# TODO - Disabled due to issue - 	:lint,
+	:puppetfile,
+	:lint,
 	:metadata,
 	:spec,
 ]
