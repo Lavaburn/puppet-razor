@@ -119,6 +119,7 @@ class razor::server inherits razor {
   File[$::razor::server_config_file]
   ->
   service { $::razor::server_service_name:
+    enable => true,
     ensure => 'running',
   }
 
