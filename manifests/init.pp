@@ -15,7 +15,9 @@
 # * database_username (string): Username for Postgres DB (Default: 'razor')
 # * database_password (string): Password for Postgres DB. REQUIRED (*)
 # * server_package_name (string): See Params
-# * server_package_version (string): Package version for Razor Server (Default: 'latest')
+# * server_package_version (string): Package version for Razor Server (Default: 'present')
+# * torquebox_package_name (string): See Params
+# * torquebox_package_version (string): Package version for Torquebox (Default: 'present')
 # * server_config_file (string): See Params
 # * server_service_name (string): See Params
 # * microkernel_url (string): See Params
@@ -56,10 +58,12 @@ class razor (
   $database_password        = undef,
 
   # Server
-  $server_package_name      = $razor::params::server_package_name,
-  $server_package_version   = 'latest',
-  $server_config_file       = $razor::params::server_config_file,
-  $server_service_name      = $razor::params::server_service_name,
+  $server_package_name        = $razor::params::server_package_name,
+  $server_package_version     = 'present',
+  $torquebox_package_name     = $razor::params::torquebox_package_name,
+  $torquebox_package_version  = 'present',
+  $server_config_file         = $razor::params::server_config_file,
+  $server_service_name        = $razor::params::server_service_name,
 
   # TFTP
   $server_hostname          = $::ipaddress,

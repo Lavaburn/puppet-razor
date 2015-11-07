@@ -100,9 +100,16 @@ class razor::server inherits razor {
   }
 
   # Installation
+
+  # Requirement for version >=1.0.0 installation on Ubuntu 12.04
+  # Package does not auto-require it!
+  package { $::razor::torquebox_package_name:
+    ensure => $::razor::torquebox_package_version,
+  } ->
+
   package { $::razor::server_package_name:
     ensure => $::razor::server_package_version,
-  }
+  } ~>  Exec['razor-migrate-database']
 
   # Configuration File
   $db_url_production = "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
@@ -113,7 +120,7 @@ class razor::server inherits razor {
   file { $::razor::server_config_file:
     ensure  => 'file',
     content => template('razor/config.yaml.erb'),
-  }
+  } ~>  Exec['razor-migrate-database']
 
   # Manage the service
   File[$::razor::server_config_file]
@@ -129,7 +136,6 @@ class razor::server inherits razor {
     cwd         => '/opt/razor',
     path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin', '/opt/razor/bin', '/opt/razor-torquebox/jruby/bin'],
     command     => 'razor-admin -e production migrate-database',
-    subscribe   => File[$::razor::server_config_file],
     refreshonly => true,
     notify      => Service[$::razor::server_service_name],
   }

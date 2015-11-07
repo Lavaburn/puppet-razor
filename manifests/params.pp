@@ -5,6 +5,7 @@
 # Parameters:
 #   * client_package_name (string): Package name for Razor Client
 #   * server_package_name (string): Package name for Razor Server
+#   * torquebox_package_name (string): Package name for Torquebox
 #   * server_config_file (string): Path to configuration file for Razor Server
 #   * server_service_name (string): Name of the service that manages Razor Server
 #   * microkernel_url (string): URL of where to download Microkernel (tarball). Set undef to skip.
@@ -12,8 +13,8 @@
 #
 class razor::params {
   $client_package_name = 'razor-client'
-
   $server_package_name = 'razor-server'
+  $torquebox_package_name = 'razor-torquebox'
 
   $server_config_file = '/etc/razor/config.yaml'
   $server_service_name = 'razor-server'

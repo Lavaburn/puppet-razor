@@ -31,7 +31,7 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
 
     {
       :name           => responseJson['name'],
-      :broker_type    => responseJson['broker-type'],
+      :broker_type    => responseJson['broker_type'],
       :configuration  => responseJson['configuration'],
       :ensure         => :present
     }
@@ -48,7 +48,7 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
   def create_broker  
     resourceHash = {                    
       :name           => resource[:name],
-      'broker-type'   => resource['broker_type'],
+      'broker_type'   => resource['broker_type'],
       :configuration  => resource['configuration'],
     }      
     post_command('create-broker', resourceHash)

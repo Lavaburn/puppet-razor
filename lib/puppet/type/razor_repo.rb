@@ -17,7 +17,7 @@ Puppet::Type.newtype(:razor_repo) do
     desc "The URL of a mirror (no downloads)"
   end
     
-  newproperty(:task) do
+  newproperty(:task) do                                           # TODO API change?
     desc "The default task to perform to install the OS"        
    end
    
