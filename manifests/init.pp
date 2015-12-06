@@ -21,6 +21,8 @@
 # * server_config_file (string): See Params
 # * server_service_name (string): See Params
 # * microkernel_url (string): See Params
+# * server_http_port (string): See Params
+# * server_https_port (string): See Params
 #
 # (*) It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
 # [https://github.com/TomPoulton/hiera-eyaml]
@@ -64,6 +66,8 @@ class razor (
   $torquebox_package_version  = 'present',
   $server_config_file         = $razor::params::server_config_file,
   $server_service_name        = $razor::params::server_service_name,
+  $server_http_port           = $razor::params::server_http_port,
+  $server_https_port          = $razor::params::server_https_port,
 
   # TFTP
   $server_hostname          = $::ipaddress,
