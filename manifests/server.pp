@@ -112,19 +112,17 @@ class razor::server inherits razor {
   } ~>  Exec['razor-migrate-database']
 
   # Configuration File
-  $db_url_production = "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
-  $repo_store = $::razor::repo_store
+  ::razor::razor_yaml_setting{'production/database_url':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
+  }
+  ::razor::razor_yaml_setting{'all/repo_store_root':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => $::razor::repo_store
+  }
 
-  Package[$::razor::server_package_name]
-  ->
-  file { $::razor::server_config_file:
-    ensure  => 'file',
-    content => template('razor/config.yaml.erb'),
-  } ~>  Exec['razor-migrate-database']
-
-  # Manage the service
-  File[$::razor::server_config_file]
-  ->
   service { $::razor::server_service_name:
     enable => true,
     ensure => 'running',
@@ -139,4 +137,8 @@ class razor::server inherits razor {
     refreshonly => true,
     notify      => Service[$::razor::server_service_name],
   }
+
+  Package[$::razor::server_package_name] -> Yaml_setting<| tag == 'razor-server' |> -> Service[$::razor::server_service_name]
+  Yaml_setting<| tag == 'razor-server' |> ~> Exec['razor-migrate-database']
+  Yaml_setting<| tag == 'razor-server' |> ~> Service[$::razor::server_service_name]
 }

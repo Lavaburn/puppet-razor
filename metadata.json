@@ -30,6 +30,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">=4.0.0"
+    },
+    {
+      "name": "reidmv/puppet-module-yamlfile",
+      "version_requirement": ">=0.2.0"
     }
   ]
 }
