@@ -69,10 +69,10 @@ class razor::server inherits razor {
               # EL 6.0 - 6.5 - OK
             }
             '7': {
-              fail("CentOS/RHEL 7 is not supported yet ${::operatingsystem}")
+              # EL 7.1 - OK
             }
             default: {
-              fail("CentOS/RHEL < 5 and >= 7 is not supported: ${::operatingsystemmajrelease}")
+              fail("CentOS/RHEL < 5 and > 7 is not supported: ${::operatingsystemmajrelease}")
             }
           }
         }

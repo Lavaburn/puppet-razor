@@ -54,6 +54,7 @@ Also see the examples/profile.pp file for an example on how to set up dependenci
   class { 'razor':
     db_hostname => '127.0.0.1',
     db_password => 'notasecretpassword',
+    server_http_port => '8150',
   } 
 ```
 

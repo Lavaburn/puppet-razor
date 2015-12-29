@@ -11,6 +11,7 @@
 class razor::tftp inherits razor {
   # Validation
   validate_string($::razor::server_hostname)
+  validate_string($::razor::server_http_port)
 
   #Root directory
   if ($::razor::tftp_root == undef) {
@@ -31,7 +32,7 @@ class razor::tftp inherits razor {
   }
 
   # bootstrap.ipxe
-  wget::fetch { "http://${::razor::server_hostname}:8080/api/microkernel/bootstrap":
+  wget::fetch { "http://${::razor::server_hostname}:${::razor::server_http_port}/api/microkernel/bootstrap":
     destination => "${directory}/bootstrap.ipxe",
   } ->
 

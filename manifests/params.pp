@@ -10,6 +10,8 @@
 #   * server_service_name (string): Name of the service that manages Razor Server
 #   * microkernel_url (string): URL of where to download Microkernel (tarball). Set undef to skip.
 #   * repo_store (string): Path where microkernel and OS images are stored.
+#   * server_http_port (string): HTTP server port name/number
+#   * server_https_port (string): HTTPS server port name/number
 #
 class razor::params {
   $client_package_name = 'razor-client'
@@ -21,4 +23,6 @@ class razor::params {
 
   $microkernel_url = 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
   $repo_store = '/var/lib/razor/repo-store/'
+  $server_http_port = '8080'
+  $server_https_port = '8081'
 }
