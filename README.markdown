@@ -19,6 +19,7 @@ This module installs and sets up Razor.
 The Database should be postgres >= 9.1
 
 Modules:
+- reidmv/yamlfile (REQUIRED)
 - puppetlabs/stdlib (REQUIRED)
 - puppetlabs/postgresql (Optional)
   * puppetlabs/apt (postgresql)

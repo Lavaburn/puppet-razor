@@ -46,8 +46,9 @@ describe 'razor' do
       it { should contain_postgresql__server__db('razor_prod') }
         
       it { should contain_package('razor-server') }    
-      $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/
-      it { should contain_file('/etc/razor/config.yaml').with_content($DB_regex) }
+      $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/      
+      it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }    
+              
       it { should contain_exec('razor-migrate-database') }        
       it { should contain_service('razor-server') }       
                 
@@ -169,7 +170,8 @@ describe 'razor' do
       
     it { should contain_package('razor-server') }    
     $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/
-    it { should contain_file('/etc/razor/config.yaml').with_content($DB_regex) }
+    it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }    
+    
     it { should contain_exec('razor-migrate-database') }        
           
     it { should contain_file('/etc/yum.repos.d/epel.repo') }

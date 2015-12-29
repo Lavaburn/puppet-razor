@@ -2,32 +2,41 @@
 
 fixtures:
   forge_modules:
-    stdlib:
-     repo: "puppetlabs-stdlib"
-     ref: "4.3.2"
-    postgresql:
-      repo: "puppetlabs-postgresql"
-      ref: "4.1.0"
-    vcsrepo:
-      repo: "puppetlabs-vcsrepo"
-      ref: "1.2.0"  
-    concat:
-      repo: "puppetlabs-concat"
-      ref: "1.1.2"
-    xinetd:
-      repo: "puppetlabs-xinetd"
-      ref: "1.3.1"
+    filemapper:
+      repo: "adrien-filemapper"
+      ref: "1.1.3"  
     wget:
       repo: "maestrodev-wget"
       ref: "1.5.6"  
-
+    apt:
+      repo: "puppetlabs-apt"
+      ref: "1.8.0"  
+    concat:
+      repo: "puppetlabs-concat"
+      ref: "1.1.2"
+    postgresql:
+      repo: "puppetlabs-postgresql"
+      ref: "4.1.0"
+    stdlib:
+     repo: "puppetlabs-stdlib"
+     ref: "4.3.2"
+    tftp:
+      repo: "puppetlabs-tftp"
+      ref: "0.2.3"
+    vcsrepo:
+      repo: "puppetlabs-vcsrepo"
+      ref: "1.2.0"  
+    xinetd:
+      repo: "puppetlabs-xinetd"
+      ref: "1.3.1"    
+    yamlfile:
+      repo: "reidmv-yamlfile"
+      ref: "0.2.0"  
+    
   repositories:
     archive:
-      repo: "https://github.com/lavaburn/puppet-archive.git"
-      branch: "0.2.0-1"
-    tftp:
-      repo: "https://github.com/lavaburn/puppetlabs-tftp.git"
-      branch: "0.2.2-1"
+      repo: "https://github.com/gini/puppet-archive.git"
+      commit: "e21f401d01da8d25848319c95ff2ccf435b0ba8b"
 
   symlinks:
     razor: "#{source_dir}"

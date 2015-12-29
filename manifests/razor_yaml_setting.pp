@@ -6,24 +6,19 @@
 #
 # Jeremy Custenborder <jcustenborder@gmail.com>
 #
-define razor::razor_yaml_setting($ensure, $target, $value=undef){
-  case $ensure{
-    'absent':{
-      yaml_setting{$name:
-        ensure => absent,
-        key    => $name,
-        target => $target,
-        tag    => 'razor-server'
-      }
-    }
-    'present':{
-      yaml_setting{$name:
-        ensure => present,
-        key    => $name,
-        target => $target,
-        value  => $value,
-        tag    => 'razor-server'
-      }
-    }
+define razor::razor_yaml_setting (
+  $target,
+  $value      = undef,
+  $ensure     = 'present',
+  $export_tag = 'razor-server'
+) {
+  validate_re($ensure, ['present', 'absent'])
+
+  yaml_setting { $name:
+    ensure => $ensure,
+    key    => $name,
+    target => $target,
+    value  => $value,
+    tag    => $export_tag,
   }
 }

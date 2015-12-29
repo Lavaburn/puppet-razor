@@ -20,6 +20,8 @@ end
 exclude_paths = [
 	"spec/**/*",
   "examples/**/*",
+  "pkg/**/*",
+  "test/**/*",
 ]
 
 
@@ -46,6 +48,11 @@ end
 
 
 # Extra Tasks
+desc "Check Puppetfile syntax"
+task :puppetfile do
+  sh "env PUPPETFILE_DIR=. r10k -v INFO puppetfile check"
+end
+
 desc "Run acceptance tests"
 RSpec::Core::RakeTask.new(:acceptance) do |t|
 	t.pattern = 'spec/acceptance'

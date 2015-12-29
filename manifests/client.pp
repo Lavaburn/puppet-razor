@@ -38,9 +38,9 @@ class razor::client inherits razor {
           refreshonly => true,
         } -> Package[$::razor::client_package_name]
       }
-	    default: {
-	      # No bugfixes required? => Test further
-	    }
+      default: {
+        # No bugfixes required? => Test further
+      }
     }
   }
 
