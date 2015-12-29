@@ -14,6 +14,9 @@
 
 This module installs and sets up Razor.
 
+[![Puppet Forge](http://img.shields.io/puppetforge/v/Lavaburn/razor.svg)](https://forge.puppetlabs.com/Lavaburn/razor)
+[![Travis CI](http://img.shields.io/travis/Lavaburn/puppet-razor.svg)](http://travis-ci.org/Lavaburn/puppet-razor)
+
 ##Dependencies
 
 The Database should be postgres >= 9.1
@@ -25,10 +28,10 @@ Modules:
   * puppetlabs/apt (postgresql)
   * puppetlabs/concat (postgresql)
 - puppetlabs/vcsrepo (Optional)
-- [https://github.com/lavaburn/puppetlabs-tftp.git] (Optional)
+- puppetlabs/tftp (>= 0.2.3) (Optional)
   * puppetlabs/xinetd (tftp)
 - maestrodev/wget (Optional/tftp)
-- [https://github.com/lavaburn/puppet-archive.git] (Optional)
+- [https://github.com/gini/puppet-archive.git] (Commit e21f401d01da8d25848319c95ff2ccf435b0ba8b) (Optional)
 
 * If you want to set up PostgreSQL config:
   	- `include 'posgresql::server'`	[puppetlabs/postgresql]
@@ -39,7 +42,7 @@ Modules:
 	- `class { '::tftp': }`		[puppetlabs/tftp]
 * If you want to download/extract a microkernel, 
 	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
-	- lavaburn/archive module	
+	- gini/archive module	
 	
 ##Usage
      
@@ -184,6 +187,8 @@ This module has been tested with:
 * Puppet 3.7.3 - Ruby 1.9.3 - Ubuntu 12.04
 * Puppet 3.7.3 - Ruby 1.8.7 - CentOS 6.3
 
+* Travis tests Ruby 1.9.3 and 2.1.0, Puppet 3.6 and above 
+
 * compile_microkernel can only work on RHEL/CentOS/Fedora
 * enable_server requires Postgres >= 9.1
 
@@ -194,7 +199,7 @@ Dependencies:
 - Bundler (gem install bundler)
 
 If you wish to test this module yourself:
-1. bundle
+1. bundle install
 2. rake test
 
 For running acceptance testing (beaker/vagrant):

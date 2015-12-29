@@ -9,7 +9,7 @@ Puppet::Type.newtype(:razor_broker) do
     desc "The broker name"    
   end
   
-  newproperty(:broker_type) do                    # TODO API change?
+  newproperty(:broker_type) do
     desc "The broker type"      
   end
   
