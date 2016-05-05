@@ -68,6 +68,9 @@ class razor (
   $server_service_name        = $razor::params::server_service_name,
   $server_http_port           = $razor::params::server_http_port,
   $server_https_port          = $razor::params::server_https_port,
+  $server_broker_paths          = $razor::params::server_broker_paths,
+  $server_task_paths          = $razor::params::server_task_paths,
+  $server_hook_paths          = $razor::params::server_hook_paths,
 
   # TFTP
   $server_hostname          = $::ipaddress,

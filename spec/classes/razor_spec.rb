@@ -3,131 +3,131 @@ require 'spec_helper'
 describe 'razor' do
   Puppet::Util::Log.level = :warning
   Puppet::Util::Log.newdestination(:console)
-  
-  let(:pre_condition) { 
+
+  let(:pre_condition) {
     "class { '::postgresql::server': }
      class { '::tftp':
        directory => '/var/lib/tftpboot',
        address   => 'localhost',
-     }" 
+     }"
   }
 
   context "ubuntu" do
-  	  let(:facts) { {
-	  	:osfamily 					      => 'debian',
-	  	:operatingsystem 			    => 'Ubuntu',
-	  	:lsbdistid					      => 'Ubuntu',
-	  	:lsbdistcodename 			    => 'precise',
-	  	:operatingsystemrelease 	=> '12.04',
-	  	:concat_basedir  			    => '/tmp', # Concat	  	
-	  } }
-	  
+      let(:facts) { {
+      :osfamily                 => 'debian',
+      :operatingsystem          => 'Ubuntu',
+      :lsbdistid                => 'Ubuntu',
+      :lsbdistcodename          => 'precise',
+      :operatingsystemrelease   => '12.04',
+      :concat_basedir           => '/tmp', # Concat
+    } }
+
     let(:params) { {
       # Microkernel compilation is only supported on Redhat variants
-      :compile_microkernel  => false,    
+      :compile_microkernel  => false,
       :server_hostname      => '192.168.1.1',
     } }
-	  
-	  context "ubuntu_defaults" do	  
-		  it { should compile.with_all_deps }
-	  
+
+    context "ubuntu_defaults" do
+      it { should compile.with_all_deps }
+
       it { should contain_class('razor') }
-        
+
       it { should contain_class('razor::client') }
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
       it { should contain_class('razor::microkernel') }
       it { should_not contain_class('razor::microkernel::compile') }
-        
-        
-      it { should contain_package('razor-client') }    
-        
+
+
+      it { should contain_package('razor-client') }
+
       it { should contain_postgresql__server__db('razor_prod') }
-        
-      it { should contain_package('razor-server') }    
-      $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/      
-      it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }    
-              
-      it { should contain_exec('razor-migrate-database') }        
-      it { should contain_service('razor-server') }       
-                
+
+      it { should contain_package('razor-server') }
+      $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/
+      it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }
+
+      it { should contain_exec('razor-migrate-database') }
+      it { should contain_service('razor-server') }
+
       it { should contain_wget__fetch('http://boot.ipxe.org/undionly.kpxe') }
-      it { should contain_tftp__file('undionly.kpxe') }       
-	    it { should contain_wget__fetch('http://192.168.1.1:8080/api/microkernel/bootstrap').with(
+      it { should contain_tftp__file('undionly.kpxe') }
+      it { should contain_wget__fetch('http://192.168.1.1:8080/api/microkernel/bootstrap').with(
         'destination' => "/var/lib/tftpboot/bootstrap.ipxe"
-	    ) }       
+      ) }
       it { should contain_tftp__file('bootstrap.ipxe') }
-        
+
       it { should contain_archive('razor-microkernel').with(
         'url' => "http://links.puppetlabs.com/razor-microkernel-latest.tar"
       ) }
     end
-      
+
     context "ubuntu_without_client" do
-	    let(:params) { {
+      let(:params) { {
         :compile_microkernel => false,
-		  	:enable_client		   => false,		  	
-		  } }
-		  
-		  it { should compile.with_all_deps }
-		    
+        :enable_client       => false,
+      } }
+
+      it { should compile.with_all_deps }
+
       it { should contain_class('razor') }
-          
+
       it { should_not contain_class('razor::client') }
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
       it { should contain_class('razor::microkernel') }
       it { should_not contain_class('razor::microkernel::compile') }
-	  end
-	  
-	  context "ubuntu_without_db" do
-	    let(:params) { {		  	
+    end
+
+    context "ubuntu_without_db" do
+      let(:params) { {
         :compile_microkernel => false,
-		  	:enable_db		       => false,		  	
-		  } }
-		  
-		  it { should compile.with_all_deps }		  
-		  
+        :enable_db           => false,
+      } }
+
+      it { should compile.with_all_deps }
+
       it { should contain_class('razor') }
-                
+
       it { should contain_class('razor::client') }
       it { should_not contain_class('razor::db') }
       it { should contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
       it { should contain_class('razor::microkernel') }
       it { should_not contain_class('razor::microkernel::compile') }
-	  end
-	  
-	  context "ubuntu_without_server" do
-	    let(:params) { {		 
-        :compile_microkernel   => false, 	
-		  	:enable_server		     => false,		  	
-		  } }
-		  
-		  it { should compile.with_all_deps } 
-      
+    end
+
+    context "ubuntu_without_server" do
+      let(:params) { {
+        :compile_microkernel   => false,
+        :enable_server         => false,
+      } }
+
+      it { should compile.with_all_deps }
+
       it { should contain_class('razor') }
-                
+
       it { should contain_class('razor::client') }
       it { should contain_class('razor::db') }
       it { should_not contain_class('razor::server') }
       it { should contain_class('razor::tftp') }
       it { should contain_class('razor::microkernel') }
       it { should_not contain_class('razor::microkernel::compile') }
-	  end
-      
+    end
+
     context "ubuntu_without_tftp" do
-      let(:params) { {     
-        :compile_microkernel   => false,  
-        :enable_tftp           => false,        
+      let(:params) { {
+        :compile_microkernel   => false,
+        :enable_tftp           => false,
       } }
-      
-      it { should compile.with_all_deps } 
-      
+
+      it { should compile.with_all_deps }
+
       it { should contain_class('razor') }
-                
+
       it { should contain_class('razor::client') }
       it { should contain_class('razor::db') }
       it { should contain_class('razor::server') }
@@ -136,48 +136,53 @@ describe 'razor' do
       it { should_not contain_class('razor::microkernel::compile') }
     end
   end
-  
+
   context "centos_defaults" do
-  	let(:facts) { {
-	    :osfamily 				           => 'redhat',
-	  	:operatingsystem 		         => 'CentOS',
-	  	:operatingsystemrelease      => '6.0',
-	  	#:lsbmajdistrelease           => '6',
-	  	:operatingsystemmajrelease   => '6',
-	  	:concat_basedir  		         => '/tmp',
-	  	:clientcert				           => 'centos',	# HIERA !!!
-	  } }
-	  
-    let(:params) { {     
-      #:enable_tftp           => false,
+    let(:facts) { {
+      :osfamily                    => 'redhat',
+      :operatingsystem             => 'CentOS',
+      :operatingsystemrelease      => '6.0',
+      #:lsbmajdistrelease           => '6',
+      :operatingsystemmajrelease   => '6',
+      :concat_basedir              => '/tmp',
+      :clientcert                  => 'centos', # HIERA !!!
+    } }
+
+    let(:params) { {
+      :server_hook_paths   => ["/a/path", "/b/path"],
+      :server_broker_paths => ["/a/path", "/b/path"],
+      :server_task_paths   => ["/a/path", "/b/path"],
     } }
     #TFTP module has a bug that fails the spec test for non-debian OSes
-  
-  	it { should compile.with_all_deps }
-    
+
+    it { should compile.with_all_deps }
+
     it { should contain_class('razor') }
-              
+
     it { should contain_class('razor::client') }
     it { should contain_class('razor::db') }
     it { should contain_class('razor::server') }
     it { should contain_class('razor::tftp') } # TFTP bug??
     it { should contain_class('razor::microkernel') }
     it { should contain_class('razor::microkernel::compile') }
-      
-    it { should contain_package('razor-client') }    
-            
+
+    it { should contain_package('razor-client') }
+
     it { should contain_postgresql__server__db('razor_prod') }
-      
-    it { should contain_package('razor-server') }    
+
+    it { should contain_package('razor-server') }
     $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/
-    it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }    
-    
-    it { should contain_exec('razor-migrate-database') }        
-          
+    it { should contain_yaml_setting('production/database_url').with_value($DB_regex) }
+    it { should contain_yaml_setting("all/hook_path").with_value("/a/path:/b/path:hooks") }
+    it { should contain_yaml_setting("all/broker_path").with_value("/a/path:/b/path:brokers") }
+    it { should contain_yaml_setting("all/task_path").with_value("/a/path:/b/path:tasks") }
+
+    it { should contain_exec('razor-migrate-database') }
+
     it { should contain_file('/etc/yum.repos.d/epel.repo') }
-    it { should contain_package('ruby193') }    
-    it { should contain_vcsrepo('/opt/razor-el-mk') }                
-    it { should contain_file('/opt/build-microkernel.sh') }   
-    it { should contain_exec('build-microkernel') }        
-  end  
+    it { should contain_package('ruby193') }
+    it { should contain_vcsrepo('/opt/razor-el-mk') }
+    it { should contain_file('/opt/build-microkernel.sh') }
+    it { should contain_exec('build-microkernel') }
+  end
 end

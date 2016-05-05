@@ -117,10 +117,29 @@ class razor::server inherits razor {
     target => $::razor::server_config_file,
     value  => "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
   }
+
   ::razor::razor_yaml_setting{'all/repo_store_root':
     ensure => present,
     target => $::razor::server_config_file,
     value  => $::razor::repo_store
+  }
+
+  ::razor::razor_yaml_setting{'all/broker_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_broker_paths, "brokers"), ':')
+  }
+
+  ::razor::razor_yaml_setting{'all/hook_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_hook_paths, "hooks"), ':')
+  }
+
+  ::razor::razor_yaml_setting{'all/task_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_task_paths, "tasks"), ':')
   }
 
   service { $::razor::server_service_name:

@@ -23,6 +23,9 @@ class razor::params {
 
   $microkernel_url = 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
   $repo_store = '/var/lib/razor/repo-store/'
+  $server_task_paths = []
+  $server_hook_paths = []
+  $server_broker_paths = []
   $server_http_port = '8080'
   $server_https_port = '8081'
 }
