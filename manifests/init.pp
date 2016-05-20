@@ -76,6 +76,9 @@ class razor (
   # Microkernel
   $microkernel_url          = $razor::params::microkernel_url,
   $repo_store               = $razor::params::repo_store,
+
+  # REST API
+  $install_api_gems         = true,
 ) inherits razor::params {
   # Validation
   validate_bool($enable_client, $enable_db, $enable_server, $compile_microkernel)
@@ -123,4 +126,13 @@ class razor (
   }
 
   # Shiro Authentication is not (yet) implemented. See notes in lib/puppet/provider/razo_rest.rb if you implement it.
+
+  # Dependency Gems Installation - these are required if you use the defined types
+  if ($install_api_gems) {
+    if versioncmp($::puppetversion, '4.0.0') < 0 {
+      ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'gem'})
+    } else {
+      ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'puppet_gem'})
+    }
+  }
 }
