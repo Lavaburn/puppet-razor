@@ -55,12 +55,77 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
   end
   
   def update_broker
-    # Broker does not provide an update function
-    Puppet.warning("Razor REST API does not provide an update function for the broker.")
-    Puppet.warning("Will attempt a delete and create, which will only work if the broker is not used by a policy.")
+    current_state = self.class.get_broker(resource[:name])
+    updated = false
     
-    delete_broker
-    create_broker
+    # Configuration
+    if current_state[:configuration] != @property_hash[:configuration]
+      current = current_state[:configuration]
+      expected = @property_hash[:configuration]
+      
+      # Update or Delete
+      current.select { |k1, v1|
+        found = false
+        
+        expected.select { |k2, v2|
+          if k1 == k2
+            if v1 != v2
+              resourceHash = {                    
+                :broker => resource[:name],
+                :key    => k1,
+                :value  => v2,
+              }
+              post_command('update-broker-configuration', resourceHash)
+            end
+                        
+            found = true
+          end          
+        }
+        
+        if !found
+          resourceHash = {                    
+            :broker => resource[:name],
+            :key    => k1,
+            :clear  => true,
+          }
+          post_command('update-broker-configuration', resourceHash)
+        end
+      }
+
+      # Add
+      expected.select { |k1, v1|
+        found = false 
+        
+        current.select { |k2, v2|
+          if k1 == k2
+            found = true
+          end
+        }
+        
+        if !found
+          resourceHash = {                    
+            :broker => resource[:name],
+            :key    => k1,
+            :value  => v1,
+          }
+          post_command('update-broker-configuration', resourceHash)
+         end
+      }
+      
+      updated = true
+    end
+    
+    if (!updated)
+      # Broker does not provide an update function
+      Puppet.warning("Razor REST API only provides an update function for the broker configuration.")
+      Puppet.warning("Will attempt a delete and create, which will only work if the broker is not used by a policy.")
+      
+      delete_broker
+      create_broker
+    end
+            
+    # Update the current info    
+    @property_hash = self.class.get_broker(resource[:name])
   end  
   
   def delete_broker
