@@ -7,7 +7,8 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 define razor::broker (
-  $root = '/opt/razor/brokers', # TODO DEFAULT FROM MAIN CLASS ??
+  $module = 'razor',
+  $root   = '/opt/razor/brokers', # TODO DEFAULT FROM MAIN CLASS ??
 ) {
   # Validation
   validate_absolute_path($root)
@@ -15,7 +16,7 @@ define razor::broker (
   # Create directory
   file { "${root}/${name}.broker":
     ensure  => 'directory',
-    source  => "puppet:///modules/razor/${name}.broker",
+    source  => "puppet:///modules/${module}/${name}.broker",
     recurse => true,
   }
 

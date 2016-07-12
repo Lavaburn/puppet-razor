@@ -47,7 +47,7 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
   def create_tag       
     resourceHash = {                    
       :name => resource[:name],
-      :rule => resource[:rule]
+      :rule => fixSpaces(resource[:rule])
     }      
     post_command('create-tag', resourceHash)
   end
@@ -55,7 +55,7 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
   def update_tag
     resourceHash = {                    
       :name => resource[:name],
-      :rule => resource[:rule]
+      :rule => fixSpaces(resource[:rule])
     }
     post_command('update-tag-rule', resourceHash)
     
@@ -69,4 +69,30 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
     }
     post_command('delete-tag', resourceHash)    
   end    
+  
+  def fixSpaces(array)
+    # Break out to avoid errors
+    if !array.kind_of?(Array)
+      return array
+    end
+    
+    result = Array.new
+    
+    # Loop
+    array.each do | item |
+      if item.kind_of?(Array)
+        result.push(fixSpaces(item))      
+      elsif item.kind_of?(String)        
+        if item.include(' ')
+          result.push('"'+item+'"')
+        else
+          result.push(item)    
+        end
+      else
+        result.push(item)        
+      end      
+    end
+    
+    return result
+  end
 end
