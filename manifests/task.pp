@@ -7,8 +7,9 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 define razor::task (
-  $module = 'razor',
-  $root   = '/opt/razor/tasks', # TODO DEFAULT FROM MAIN CLASS ??
+  $module    = 'razor',
+  $directory = 'tasks',
+  $root      = '/opt/razor/tasks', # TODO DEFAULT FROM MAIN CLASS ??
 ) {
   # Validation
   validate_absolute_path($root)
@@ -16,7 +17,7 @@ define razor::task (
   # Create directory
   file { "${root}/${name}.task":
     ensure  => 'directory',
-    source  => "puppet:///modules/${module}/${name}.task",
+    source  => "puppet:///modules/${module}/${directory}/${name}.task",
     recurse => true,
   }
 
