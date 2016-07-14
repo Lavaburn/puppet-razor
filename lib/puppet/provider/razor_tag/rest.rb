@@ -83,7 +83,7 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
       if item.kind_of?(Array)
         result.push(fixSpaces(item))      
       elsif item.kind_of?(String)        
-        if item.include(' ')
+        if item.include?' '
           result.push('"'+item+'"')
         else
           result.push(item)    
