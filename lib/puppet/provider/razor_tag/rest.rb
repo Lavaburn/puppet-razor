@@ -58,6 +58,7 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
       :rule  => fixSpaces(resource[:rule]),
       :force => true
     }
+    Puppet.debug("update-tag-rule #{resourceHash.inspect} => JSON #{resourceHash.to_json}")
     post_command('update-tag-rule', resourceHash)
     
     # Update the current info
@@ -85,7 +86,8 @@ Puppet::Type.type(:razor_tag).provide :rest, :parent => Puppet::Provider::Rest d
         result.push(fixSpaces(item))      
       elsif item.kind_of?(String)        
         if item.include?' '
-          result.push('"'+item+'"')
+          #TODO result.push('"'+item+'"')
+          result.push(item) 
         else
           result.push(item)    
         end
