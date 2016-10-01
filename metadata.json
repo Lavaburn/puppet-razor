@@ -16,7 +16,7 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6.5",
-	"7.2"
+        "7.2"
       ]
     },
     {
@@ -31,6 +31,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">=4.0.0"
+    },
+    {
+      "name": "reidmv/yamlfile",
+      "version_requirement": ">=0.2.0"
     }
   ]
 }
