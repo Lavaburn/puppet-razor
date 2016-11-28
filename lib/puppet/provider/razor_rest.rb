@@ -102,7 +102,7 @@ class Puppet::Provider::Rest < Puppet::Provider
     begin
       responseJson = JSON.parse(response)
     rescue
-      raise "Could not parse the JSON response from Razor: " + response
+      raise "Could not parse the JSON response from Razor: #{response}"
     end
   
     responseJson
