@@ -7,9 +7,9 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 define razor::broker (
-  $module    = 'razor',
-  $directory = 'brokers',
-  $root      = '/opt/razor/brokers', # TODO DEFAULT FROM MAIN CLASS ??
+  String $module    = 'razor',
+  String $directory = 'brokers',
+  String $root      = "${::razor::data_dir}/brokers",
 ) {
   # Validation
   validate_absolute_path($root)

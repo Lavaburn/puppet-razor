@@ -9,9 +9,6 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 class razor::client inherits razor {
-  # Validation
-  validate_string($::razor::client_package_name, $::razor::client_package_version)
-
   # Bugfixes for installing the gem
   if ($::operatingsystem == 'Ubuntu') {
     case $::lsbdistcodename {

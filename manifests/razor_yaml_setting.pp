@@ -7,13 +7,11 @@
 # Jeremy Custenborder <jcustenborder@gmail.com>
 #
 define razor::razor_yaml_setting (
-  $target,
-  $value      = undef,
-  $ensure     = 'present',
-  $export_tag = 'razor-server'
+  String $target,
+  Variant[Undef, String] $value     = undef,
+  Enum['present', 'absent'] $ensure = 'present',
+  String $export_tag                = 'razor-server'
 ) {
-  validate_re($ensure, ['present', 'absent'])
-
   yaml_setting { $name:
     ensure => $ensure,
     key    => $name,

@@ -14,15 +14,21 @@
 #   * server_https_port (string): HTTPS server port name/number
 #
 class razor::params {
-  $client_package_name = 'razor-client'
-  $server_package_name = 'razor-server'
+  $client_package_name    = 'razor-client'
+  $server_package_name    = 'razor-server'
   $torquebox_package_name = 'razor-torquebox'
 
-  $server_config_file = '/etc/razor/config.yaml'
+  $server_config_file  = '/etc/razor/config.yaml'
   $server_service_name = 'razor-server'
 
-  $microkernel_url = 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
-  $repo_store = '/var/lib/razor/repo-store/'
-  $server_http_port = '8080'
-  $server_https_port = '8081'
+  $root_dir = '/opt/razor'
+                      # /opt/puppetlabs/server/apps/razor-server on Razor Server >= 1.4.0
+  $data_dir = '/opt/razor'
+                      # /opt/puppetlabs/server/data/razor-server on Razor Server >= 1.4.0
+
+  $microkernel_url   = 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
+  $repo_store        = '/var/lib/razor/repo-store/'
+                      # /opt/puppetlabs/server/data/razor-server/repo on Razor Server >= 1.4.0
+  $server_http_port  = 8080
+  $server_https_port = 8081
 }

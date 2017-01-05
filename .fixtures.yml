@@ -1,42 +1,40 @@
 # Fixtures file hold the dependencies for spec helper
 
 fixtures:
-  forge_modules:
+  forge_modules:   
     filemapper:
-      repo: "adrien-filemapper"
-      ref: "1.1.3"  
+      repo: "adrien/filemapper"
+      ref: "1.1.3" 
     wget:
-      repo: "maestrodev-wget"
-      ref: "1.5.6"  
+      repo: "maestrodev/wget"
+      ref: "1.7.3"      
+    archive:
+      repo: "puppet/archive"
+      ref: "1.2.0"  
     apt:
-      repo: "puppetlabs-apt"
-      ref: "1.8.0"  
+      repo: "puppetlabs/apt"
+      ref: "2.3.0"  
     concat:
-      repo: "puppetlabs-concat"
-      ref: "1.1.2"
+      repo: "puppetlabs/concat"
+      ref: "2.2.0"
     postgresql:
-      repo: "puppetlabs-postgresql"
-      ref: "4.1.0"
+      repo: "puppetlabs/postgresql"
+      ref: "4.8.0"
     stdlib:
-     repo: "puppetlabs-stdlib"
-     ref: "4.3.2"
+     repo: "puppetlabs/stdlib"
+     ref: "4.14.0"
     tftp:
-      repo: "puppetlabs-tftp"
+      repo: "puppetlabs/tftp"
       ref: "0.2.3"
     vcsrepo:
-      repo: "puppetlabs-vcsrepo"
-      ref: "1.2.0"  
+      repo: "puppetlabs/vcsrepo"
+      ref: "1.5.0"    
     xinetd:
-      repo: "puppetlabs-xinetd"
-      ref: "1.3.1"    
+      repo: "puppetlabs/xinetd"
+      ref: "2.0.0"  
     yamlfile:
-      repo: "reidmv-yamlfile"
-      ref: "0.2.0"  
-    
-  repositories:
-    archive:
-      repo: "https://github.com/gini/puppet-archive.git"
-      commit: "e21f401d01da8d25848319c95ff2ccf435b0ba8b"
-
+      repo: "reidmv/yamlfile"
+      ref: "0.2.0"    
+      
   symlinks:
     razor: "#{source_dir}"

@@ -1,8 +1,8 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Nicolas Truyens (Lavaburn)",
-  "license": "Apache License 2.0",
+  "license": "Apache-2.0",
   "summary": "Puppet module for managing (Puppetlabs) Razor",
   "source": "https://github.com/Lavaburn/puppet-razor",
   "project_page": "https://github.com/Lavaburn/puppet-razor",
@@ -15,25 +15,27 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6.5"
+        "6.5",
+        "7.2"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "10.04",
-        "13.10"
+        "12.04",
+        "14.04"
       ]
     }
   ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.0.0"
+      "version_requirement": ">=4.0.0 <5.0.0"
     },
     {
-      "name": "reidmv/puppet-module-yamlfile",
-      "version_requirement": ">=0.2.0"
+      "name": "reidmv/yamlfile",
+      "version_requirement": ">=0.2.0 < 1.0.0"
     }
   ]
 }

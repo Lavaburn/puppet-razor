@@ -7,9 +7,9 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 define razor::task (
-  $module    = 'razor',
-  $directory = 'tasks',
-  $root      = '/opt/razor/tasks', # TODO DEFAULT FROM MAIN CLASS ??
+  String $module    = 'razor',
+  String $directory = 'tasks',
+  String $root      = "${::razor::data_dir}/tasks",
 ) {
   # Validation
   validate_absolute_path($root)

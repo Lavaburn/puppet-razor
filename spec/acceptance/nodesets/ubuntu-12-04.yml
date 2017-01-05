@@ -1,0 +1,11 @@
+HOSTS:
+  ubuntu-12-04:
+    roles:
+      - agent
+    platform: ubuntu-12.04-x64
+    box: puppetlabs/ubuntu-12.04-64-puppet
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-12.04-64-puppet
+    hypervisor: vagrant    
+CONFIG:
+  log_level: debug
+  type: aio

@@ -9,10 +9,6 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 class razor::tftp inherits razor {
-  # Validation
-  validate_string($::razor::server_hostname)
-  validate_string($::razor::server_http_port)
-
   #Root directory
   if ($::razor::tftp_root == undef) {
     $directory = $::tftp::directory

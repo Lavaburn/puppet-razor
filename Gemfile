@@ -1,23 +1,22 @@
 source "https://rubygems.org"
 
 group :test do
-	gem "rake"
-
-	gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.7.0'
-	gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
-	gem "puppetlabs_spec_helper", :git => 'https://github.com/puppetlabs/puppetlabs_spec_helper.git'
-	
-	gem "r10k"
+	gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.3.2'
+	gem "puppetlabs_spec_helper"
+	gem "metadata-json-lint"
+	gem "r10k"	
 end
 
-group :development do
-	# gem "travis"
-	# gem "travis-lint"
-	
-	gem "beaker"
+group :integration_test do			  	  
 	gem "beaker-rspec"
-	gem "beaker-librarian"
 	gem "vagrant-wrapper"
-	
+	gem 'beaker-puppet_install_helper'
+end
+		  
+group :development do	
 	gem "puppet-blacksmith"
+	gem "guard-rake"
+	
+    gem "travis"
+    gem "travis-lint"
 end

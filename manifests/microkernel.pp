@@ -10,21 +10,15 @@
 #
 class razor::microkernel inherits razor {
   # Validation
-  validate_string($::razor::microkernel_url)
   validate_absolute_path($::razor::repo_store)
 
-  include archive::prerequisites
+  include ::archive
 
-  archive { 'razor-microkernel':
-    url       => $::razor::microkernel_url,
-    target    => $::razor::repo_store,
-    # Required !
-    extension => 'tar',
-    # I don't want to create a subdirectory. Extract contents of tar direct to repo_store
-    # Tarball contains root dir called microkernel.
-    root_dir  => '.',
-    # 160 MB @ 384 kbps
-    timeout   => 3600,
-    checksum  => false,
+  archive { '/tmp/razor-microkernel.tar':
+    source          => $::razor::microkernel_url,
+    extract         => true,
+    extract_path    => $::razor::repo_store,
+    checksum_verify => false,
+    # archive no longer supports a timeout value. Note that the microkernel is about 160 MB.
   }
 }

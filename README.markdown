@@ -1,21 +1,21 @@
 # Puppet Module for Razor
 
-####Table of Contents
-
-1. [Overview](#overview)
-2. [Dependencies](#dependencies)
-3. [Usage](#usage)
-4. [Reference](#reference)
-5. [Compatibility](#compatibility)
-6. [Testing](#testing)
-7. [Copyright](#copyright)
-
 ##Overview
 
 This module installs and sets up Razor.
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/Lavaburn/razor.svg)](https://forge.puppetlabs.com/Lavaburn/razor)
 [![Travis CI](http://img.shields.io/travis/Lavaburn/puppet-razor.svg)](http://travis-ci.org/Lavaburn/puppet-razor)
+
+##Table of Contents
+
+1. [Dependencies](#dependencies)
+2. [Usage](#usage)
+3. [Reference](#reference)
+4. [Compatibility](#compatibility)
+5. [Testing](#testing)
+6. [Copyright](#copyright)
+
 
 ##Dependencies
 
@@ -28,10 +28,10 @@ Modules:
   * puppetlabs/apt (postgresql)
   * puppetlabs/concat (postgresql)
 - puppetlabs/vcsrepo (Optional)
-- puppetlabs/tftp (>= 0.2.3) (Optional)
+- puppetlabs/tftp (Optional)
   * puppetlabs/xinetd (tftp)
 - maestrodev/wget (Optional/tftp)
-- [https://github.com/gini/puppet-archive.git] (Commit e21f401d01da8d25848319c95ff2ccf435b0ba8b) (Optional)
+- puppet/archive (Optional)
 
 * If you want to set up PostgreSQL config:
   	- `include 'posgresql::server'`	[puppetlabs/postgresql]
@@ -42,7 +42,7 @@ Modules:
 	- `class { '::tftp': }`		[puppetlabs/tftp]
 * If you want to download/extract a microkernel, 
 	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
-	- gini/archive module	
+	- puppet/archive module	
 	
 ##Usage
      
@@ -183,19 +183,19 @@ razor_tag { 'small':
 
 ##Compatibility
 
-This module has been tested with:
-* Puppet 3.7.3 - Ruby 1.9.3 - Ubuntu 12.04
-* Puppet 3.7.3 - Ruby 1.8.7 - CentOS 6.3
+This module has been tested with Razor Server 1.5.0 and:
+* Ubuntu 12.04 with Puppet 4.3.2 (Ruby 2.1.8)
+# TODO Ubuntu 14.04
+# TODO CentOS 6.6
+# TODO CentOS 7.2
 
-* Travis tests Ruby 1.9.3 and 2.1.0, Puppet 3.6 and above 
-
-* compile_microkernel can only work on RHEL/CentOS/Fedora
+* compile_microkernel only works on RHEL/CentOS/Fedora (Razor Microkernel constraint)
 * enable_server requires Postgres >= 9.1
 
 ##Testing
 
 Dependencies:
-- Ruby
+- Ruby >= 2.2.0 < 2.4.0
 - Bundler (gem install bundler)
 
 If you wish to test this module yourself:
@@ -203,12 +203,14 @@ If you wish to test this module yourself:
 2. rake test
 
 For running acceptance testing (beaker/vagrant):
-1. rake acceptance
-(TODO - DEPENDENCIES)
+1. gem uninstall bundler
+2. gem install bundler -v 1.10.6 # This is the last version that is compatible with Vagrant (last version: 1.8.1)
+3. bundle install --binstubs
+4. rake beaker:ubuntu-12-04
 
 ##Copyright
 
-   Copyright 2014 Nicolas Truyens
+   Copyright 2017 Nicolas Truyens
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

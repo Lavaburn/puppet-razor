@@ -1,20 +1,13 @@
-# Required gems
-require 'rubygems'
-require 'bundler/setup'
-require 'hiera'
-
-# Gems: Rake tasks
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 
-# These gems aren't always present
+# These two gems aren't always present, for instance
+# on Travis with --without development
 begin
-	#On Travis with --without development
-	require 'puppet_blacksmith/rake_tasks'
+  require 'puppet_blacksmith/rake_tasks'
 rescue LoadError
 end
-
 
 # Directories that don't need to be checked (Lint/Syntax)
 exclude_paths = [
@@ -63,7 +56,7 @@ task :test => [
 	:syntax,
 	:puppetfile,
 	:lint,
-	:metadata,
+	:metadata_lint,
 	:spec,
 ]
 

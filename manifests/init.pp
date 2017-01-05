@@ -43,46 +43,45 @@
 #
 class razor (
   # Deployment Options
-  $enable_client            = true,
-  $enable_db                = true,
-  $enable_server            = true,
-  $enable_tftp              = true,
-  $compile_microkernel      = true,
+  Boolean $enable_client       = true,
+  Boolean $enable_db           = true,
+  Boolean $enable_server       = true,
+  Boolean $enable_tftp         = true,
+  Boolean $compile_microkernel = true,
 
   # Client
-  $client_package_name      = $razor::params::client_package_name,
-  $client_package_version   = 'latest',
+  String $client_package_name    = $razor::params::client_package_name,
+  String $client_package_version = 'latest',
 
   # DB
-  $database_hostname        = 'localhost',
-  $database_name            = 'razor_prod',
-  $database_username        = 'razor',
-  $database_password        = undef,
+  String $database_hostname                 = 'localhost',
+  String $database_name                     = 'razor_prod',
+  String $database_username                 = 'razor',
+  Variant[Undef, String] $database_password = undef,
 
   # Server
-  $server_package_name        = $razor::params::server_package_name,
-  $server_package_version     = 'present',
-  $torquebox_package_name     = $razor::params::torquebox_package_name,
-  $torquebox_package_version  = 'present',
-  $server_config_file         = $razor::params::server_config_file,
-  $server_service_name        = $razor::params::server_service_name,
-  $server_http_port           = $razor::params::server_http_port,
-  $server_https_port          = $razor::params::server_https_port,
+  String $server_package_name       = $razor::params::server_package_name,
+  String $server_package_version    = 'present',
+  String $root_dir                  = $razor::params::root_dir,
+  String $data_dir                  = $razor::params::data_dir,
+  String $torquebox_package_name    = $razor::params::torquebox_package_name,
+  String $torquebox_package_version = 'present',
+  String $server_config_file        = $razor::params::server_config_file,
+  String $server_service_name       = $razor::params::server_service_name,
+  Integer $server_http_port         = $razor::params::server_http_port,
+  Integer $server_https_port        = $razor::params::server_https_port,
 
   # TFTP
-  $server_hostname          = $::ipaddress,
-  $tftp_root                = undef,
+  String $server_hostname           = $::ipaddress,
+  Variant[Undef, String] $tftp_root = undef,
 
   # Microkernel
-  $microkernel_url          = $razor::params::microkernel_url,
-  $repo_store               = $razor::params::repo_store,
+  String $microkernel_url = $razor::params::microkernel_url,
+  String $repo_store      = $razor::params::repo_store,
 
   # REST API
-  $install_api_gems         = true,
+  Boolean $install_api_gems = true,
 ) inherits razor::params {
-  # Validation
-  validate_bool($enable_client, $enable_db, $enable_server, $compile_microkernel)
-
   # Dependencies
   anchor { 'razor-server-dependencies': }
   anchor { 'razor-server-postinstall': }

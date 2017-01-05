@@ -13,9 +13,6 @@ class razor::server inherits razor {
   if $::razor::database_password == undef {
     fail('database_password is a required parameter!')
   }
-  validate_string($::razor::database_hostname, $::razor::database_name)
-  validate_string($::razor::database_username, $::razor::database_password)
-  validate_string($::razor::server_package_name, $::razor::server_package_version)
   validate_absolute_path($::razor::server_config_file)
   validate_absolute_path($::razor::repo_store)
 
@@ -100,7 +97,11 @@ class razor::server inherits razor {
   }
 
   # Installation
-
+  # Ensure directory is present before writing config files...
+  file { '/etc/razor':
+    ensure => 'directory',
+  }
+  ->
   # Requirement for version >=1.0.0 installation on Ubuntu 12.04
   # Package does not auto-require it!
   package { $::razor::torquebox_package_name:
@@ -131,8 +132,14 @@ class razor::server inherits razor {
   # Setup the Database
   # File[$::razor::server_config_file] -> => not required?
   exec { 'razor-migrate-database':
-    cwd         => '/opt/razor',
-    path        => ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin', '/opt/razor/bin', '/opt/razor-torquebox/jruby/bin'],
+    cwd         => $::razor::root_dir,
+    path        => [
+      '/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin',
+      # Razor 1.0 - 1.3
+      '/opt/razor/bin', '/opt/razor-torquebox/jruby/bin',
+      # Razor 1.4 - 1.5
+      '/opt/puppetlabs/bin/'
+    ],
     command     => 'razor-admin -e production migrate-database',
     refreshonly => true,
     notify      => Service[$::razor::server_service_name],
