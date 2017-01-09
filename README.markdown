@@ -182,15 +182,14 @@ razor_tag { 'small':
   * rest: REST provider for Razor broker
 
 ##Compatibility
-
-This module has been tested with Razor Server 1.5.0 and:
-* Ubuntu 12.04 with Puppet 4.3.2 (Ruby 2.1.8)
-# TODO Ubuntu 14.04
-# TODO CentOS 6.6
-# TODO CentOS 7.2
-
 * compile_microkernel only works on RHEL/CentOS/Fedora (Razor Microkernel constraint)
 * enable_server requires Postgres >= 9.1
+
+This module has been tested using Beaker with Puppet 4.3.2 (Ruby 2.1.8) on:
+* Ubuntu 12.04 (complete without microkernel compilation) - Razor Server 1.0.0 to 1.5.0
+* Ubuntu 14.04 (complete without microkernel compilation) - Razor Server 1.0.0 to 1.5.0
+* CentOS 6.6   (complete without microkernel compilation) - Razor Server 1.0.0 to 1.5.0
+* CentOS 7.2   (complete with microkernel compilation) - Razor Server 1.4.0 (!) to 1.5.0
 
 ##Testing
 

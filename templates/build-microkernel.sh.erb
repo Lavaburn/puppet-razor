@@ -1,13 +1,9 @@
 #!/bin/bash
 
-<% if @install_realpath %>
-	rpm -i http://apt.sw.be/redhat/el<%= @version %>/en/x86_64/rpmforge/RPMS/realpath-1.17-1.el<%= @version %>.rf.x86_64.rpm
-<% end %>
-
-# Go to source code directory
-cd /opt/razor-el-mk
+set -e
 
 # Install gems using bundler
+gem install bundler
 bundle install --path .bundle/gems/
 
 # Execute Rake-task: build
@@ -16,3 +12,7 @@ bundle exec rake build
 # Build LiveCD
 ./build-livecd
 ./build-livecd-root
+
+# Rename image
+last_tag=$(git describe)
+mv pkg/microkernel-${last_tag#release-}.tar pkg/microkernel.tar

@@ -10,64 +10,102 @@
 #
 class razor::microkernel::compile inherits razor {
   case $::osfamily {
-    'redhat': {
+    'RedHat': {
       case $::operatingsystem {
         'CentOS', 'Fedora': {
-          # [CentOS] Require EPEL Repository for the livecd-tools
-          #$install_epel = true
-          $version = $::operatingsystemmajrelease
+          # Ordering
+          anchor { 'razor-microkernel-dependencies-repos': }
+          anchor { 'razor-microkernel-packages': }
+          anchor { 'razor-microkernel-dependencies': }
 
-          # [CentOS 6] Require Ruby 1.9.3
-          $extra_packages = ['ruby193']
+          # Parameters
+          $microkernel_dir = '/opt/razor-el-mk'
+          $install_script  = '/opt/build-microkernel.sh'
+          $source   = 'https://github.com/puppetlabs/razor-el-mk'
+          $revision = 'master' # Last known working tag on CentOS 7.2: release-006
 
-          # [CentOS 6.5] Require realpath
-          $install_realpath = true
-          # TODO - check CentOS 5, 7, Fedora 19, 20, RHEL 5, 6, 7 ?
-
-# TODO NOT IN V7 ... => latest 006 version requires ruby 2.0.0 anyway
-          # Action Chain
-          file { '/etc/yum.repos.d/epel.repo':
-            content => template('razor/epel.repo.erb'),
-          } ->
-
-          package { ['livecd-tools', 'git', 'centos-release-SCL', 'coreutils']:
+          # Dependencies
+          Anchor['razor-microkernel-dependencies-repos']
+          ->
+          package { ['git', 'livecd-tools']:
             ensure => 'installed',
-          } ->
+          } -> Anchor['razor-microkernel-packages']
 
-          package { $extra_packages:
-            ensure => 'installed',
-          } ->
-# TODO NOT IN V7
+          if (versioncmp($::operatingsystemmajrelease, '7') < 0) {
+            warning('CentOS 6.x is no longer supported by this module for microkernel compilation. It is recommended to use CentOS 7.x.')
 
-# TODO bundle => gem install bundler
-# /usr/local/bin/bundle
+            # livecd-tools package is not available on CentOS 6 - use EPEL repo
+            yumrepo { 'epel':
+              baseurl  => "http://download.fedoraproject.org/pub/epel/${::operatingsystemmajrelease}/\$basearch",
+              enabled  => 1,
+              gpgcheck => 0,
+            }
+            ->
+            Anchor['razor-microkernel-dependencies-repos']
+
+            # Upgrade Ruby 1.8.7 to 1.9.3
+            $ruby_version = '1.9.3'
+            $rvm_install_script = "/opt/rvm-install-ruby-${ruby_version}.sh"
+
+            file { $rvm_install_script:
+              ensure  => 'file',
+              content => template('razor/install_rvm.sh.erb'),
+              mode    => '0700',
+            }
+            ~>
+            exec { "rvm-install-ruby-${ruby_version}":
+              cwd         => '/opt',
+              command     => $rvm_install_script,
+              refreshonly => true,
+              timeout     => 3600,
+            }
+            ->
+            Anchor['razor-microkernel-dependencies']
+
+            # Install realpath command
+            package { 'realpath':
+              source   => "https://repoforge.cu.be/redhat/el${::operatingsystemmajrelease}/en/x86_64/rpmforge/RPMS/realpath-1.17-1.el${::operatingsystemmajrelease}.rf.x86_64.rpm",
+              provider => 'rpm',
+            }
+            ->
+            Anchor['razor-microkernel-dependencies']
+
+            $rvm_enable = "source /etc/profile.d/rvm.sh; /usr/local/rvm/bin/rvm use ${ruby_version}"
+            $build_command = "/bin/bash -c '${rvm_enable}; /opt/build-microkernel.sh'"
+          } else {
+            # Tested on CentOS 7.2
+            $build_command = '/opt/build-microkernel.sh'
+          }
 
           # Download git repository
-          vcsrepo { '/opt/razor-el-mk':
-            ensure   => present,
-            provider => git,
-            source   => 'https://github.com/puppetlabs/razor-el-mk',
-          } ->
+          Anchor['razor-microkernel-packages']
+          ->
+          vcsrepo { $microkernel_dir:
+            ensure   => 'present',
+            provider => 'git',
+            source   => $source,
+            revision => $revision,
+          } -> Anchor['razor-microkernel-dependencies']
 
           # Create installation script
-          file { '/opt/build-microkernel.sh':
+          file { $install_script:
             ensure  => 'file',
             content => template('razor/build-microkernel.sh.erb'),
             mode    => '0700',
-          } ->
+          } -> Anchor['razor-microkernel-dependencies']
 
           # Run script
+          Anchor['razor-microkernel-dependencies']
+          ->
           exec { 'build-microkernel':
-            cwd         => '/opt/razor-el-mk',
-            command     => '/usr/bin/scl enable ruby193 /opt/build-microkernel.sh',
-            subscribe   => File['/opt/build-microkernel.sh'],
-            refreshonly => true,
-            timeout     => 3600,
-            #creates     => "/opt/razor-el-mk/pkg/microkernel-005.tar"
+            cwd     => $microkernel_dir,
+            command => $build_command,
+            timeout => 3600,
+            creates => "${microkernel_dir}/pkg/microkernel.tar"
           }
         }
         default: {
-          fail("Operating System (redhat) is not supported: ${::operatingsystem}")
+          fail("Operating System (RedHat) is not supported: ${::operatingsystem}")
         }
       }
     }
