@@ -17,21 +17,26 @@ class Puppet::Provider::Rest < Puppet::Provider
   end
   
   def self.get_rest_info
-    # TODO api class with configuration YAML !
+    config_file = "/etc/razor/api.yaml"
+
+    data = File.read(config_file) or raise "Could not read setting file #{config_file}"    
+    yamldata = YAML.load(data)
     
-    # Shiro Authentication is not (yet) configured. Authentication could possibly happen here?
+    if yamldata.include?('hostname')
+      hostname = yamldata['hostname']
+    else
+      hostname = 'localhost'
+    end    
     
-    # IP Address:
-       # As long as the custom types are configured on the same host as razor server is configured, the IP will be localhost.
-       # I can not find any reasons why you would want the custom type to be configured on another host...
-    # Port: 
-      # The port config is very well hidden in torquebox (jboss) configuration. 
-      # Was 8080 in version <= 1.1.0 - now set to 8150
+    if yamldata.include?('api_port')
+      port = yamldata['api_port']
+    else
+      port = 8150
+    end
     
-    ip = '127.0.0.1'
-    port = '8150'     
-           
-    { :ip   => ip,
+    # TODO - Shiro Authentication
+        
+    { :ip   => hostname,
       :port => port }
   end
   
@@ -101,5 +106,14 @@ class Puppet::Provider::Rest < Puppet::Provider
     end
   
     responseJson
+  end
+  
+  def self.get_server_version()
+    rest = get_rest_info
+    url = "http://#{rest[:ip]}:#{rest[:port]}/api"    
+    
+    responseJson = get_json_from_url(url)
+    version = responseJson["version"]["server"] || "Unknown"            
+    version
   end
 end

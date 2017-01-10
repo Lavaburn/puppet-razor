@@ -22,6 +22,4 @@ define razor::task (
     source  => "puppet:///modules/${module}/${directory}/${name}.task",
     recurse => true,
   }
-
-  # TODO API Call ...
 }

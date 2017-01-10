@@ -103,9 +103,6 @@ class razor (
   Variant[Undef, String] $binary_dir           = undef,
   Variant[Undef, String] $jruby_binary_dir     = undef,
   Variant[Undef, String] $torquebox_binary_dir = undef,
-
-  # REST API
-  Boolean $install_api_gems = true,
 ) inherits razor::params {
   # Ports
   if ($enable_new_ports_support) {
@@ -226,13 +223,4 @@ class razor (
   }
 
   # Shiro Authentication is not (yet) implemented. See notes in lib/puppet/provider/razo_rest.rb if you implement it.
-
-  # Dependency Gems Installation - these are required if you use the defined types
-  if ($install_api_gems) {
-    if versioncmp($::puppetversion, '4.0.0') < 0 {
-      ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'gem'})
-    } else {
-      ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'puppet_gem'})
-    }
-  }
 }

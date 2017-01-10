@@ -52,7 +52,7 @@ describe 'razor class' do
   end
 
   context 'upgrade razor 1.3.0 to 1.5.0' do   
-    before { skip("Skipping upgrade from 1.3.0 to 1.5.0") }
+    #before { skip("Skipping upgrade from 1.3.0 to 1.5.0") }
       
     it 'should stop the service before upgrading' do
       stop_razor()
@@ -81,7 +81,7 @@ describe 'razor class' do
   end
 
   context 'downgrade razor 1.5.0 to 1.1.0' do   
-    #before { skip("Skipping downgrade from 1.5.0 to 1.1.0") }
+    before { skip("Skipping downgrade from 1.5.0 to 1.1.0") }
       
     it 'should stop the service before upgrading' do
       stop_razor()
@@ -90,7 +90,7 @@ describe 'razor class' do
  
   # Version 1.1.0
   context 'razor 1.1.0 without microkernel' do    
-    #before { skip("Skipping installation of 1.1.0") }
+    before { skip("Skipping installation of 1.1.0") }
 
     let(:repository) { 'puppetlabs3' }
     let(:version) { '1.1.0' }
@@ -107,6 +107,14 @@ describe 'razor class' do
         
     it_behaves_like 'an idempotent manifest'
     it_behaves_like 'a running razor server', 8150, '/var/lib/razor/repo-store/microkernel', '1.1.0'
+  end
+
+  context 'upgrade razor 1.1.0 to 1.5.0' do   
+    before { skip("Skipping upgrade from 1.1.0 to 1.5.0") }
+      
+    it 'should stop the service before upgrading' do
+      stop_razor()
+    end
   end
 
   # Microkernel compilation
@@ -126,7 +134,7 @@ describe 'razor class' do
       setup_repository(repository)
     end
     
-    it_behaves_like 'an idempotent manifest'  # Note: This will fail if 1.5.0 is currently installed and system is not CentOS >= 7.0
+    it_behaves_like 'an idempotent manifest'
     
     it_behaves_like 'a running razor server', 8150, '/opt/puppetlabs/server/data/razor-server/repo/microkernel', "DEVELOPMENT"
       

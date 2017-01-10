@@ -1,6 +1,6 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache-2.0",
   "summary": "Puppet module for managing (Puppetlabs) Razor",
@@ -15,8 +15,8 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6.5",
-        "7.2"
+        "6.x",
+        "7.x"
       ]
     },
     {

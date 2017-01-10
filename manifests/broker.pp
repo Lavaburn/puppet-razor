@@ -22,6 +22,4 @@ define razor::broker (
     source  => "puppet:///modules/${module}/${directory}/${name}.broker",
     recurse => true,
   }
-
-  # TODO API Call ...
 }
