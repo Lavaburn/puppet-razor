@@ -23,7 +23,6 @@ describe 'razor' do
 		  it { should compile.with_all_deps }
 	  
       it { should contain_class('razor') }
-        it { should contain_package('rest-client') }
         
       it { should contain_class('razor::client') }
         it { should contain_package('razor-client') }   
@@ -115,7 +114,6 @@ describe 'razor' do
       it { should compile.with_all_deps }
     
       it { should contain_class('razor') }
-        it { should contain_package('rest-client') }
         
       it { should contain_class('razor::client') }
         it { should contain_package('razor-client') }   
