@@ -1,3 +1,15 @@
 ---
 hostname: <%= @hostname %>
 api_port: <%= @api_port %>
+<% if @http_method -%>
+http_method: <%= @http_method %>
+<% end -%>
+<% if @client_cert -%>
+client_cert: <%= @client_cert %>
+<% end -%>
+<% if @private_key -%>
+private_key: <%= @private_key %>
+<% end -%>
+<% if @ca_cert -%>
+ca_cert: <%= @ca_cert %>
+<% end -%>
