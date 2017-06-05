@@ -33,11 +33,38 @@ class Puppet::Provider::Rest < Puppet::Provider
     else
       port = 8150
     end
+     if yamldata.include?('http_method')
+      http = yamldata['http_method']
+    else
+      http = 'http'
+    end
+
+    if yamldata.include?('client_cert')
+      client_cert = yamldata['client_cert']
+    else
+      client_cert = "/etc/puppetlabs/puppet/ssl/certs/#{hostname}.pem"
+    end
+
+    if yamldata.include?('private_key')
+      private_key = yamldata['private_key']
+    else
+      private_key = "/etc/puppetlabs/puppet/ssl/private_keys/#{hostname}.pem"
+    end
+    
+    if yamldata.include?('ca_cert')
+      ca_cert = yamldata['ca_cert']
+    else
+      ca_cert = '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
+    end
     
     # TODO - Shiro Authentication
         
     { :ip   => hostname,
-      :port => port }
+      :port => port,
+      :http => http,
+      :client_cert => client_cert,
+      :private_key => private_key,
+      :ca_cert => ca_cert }
   end
   
   def exists?    
@@ -62,7 +89,7 @@ class Puppet::Provider::Rest < Puppet::Provider
   
   def self.get_objects(type)    
     rest = get_rest_info
-    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/#{type}"
+    url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api/collections/#{type}"
     
     responseJson = get_json_from_url(url)
 
@@ -81,10 +108,17 @@ class Puppet::Provider::Rest < Puppet::Provider
     Puppet.debug("REST API => API: #{command}")    
     
     rest = self.class.get_rest_info
-    url = "http://#{rest[:ip]}:#{rest[:port]}/api/commands/#{command}"
-    
+    url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api/commands/#{command}"
+    ssl_rest = RestClient::Resource.new(
+        url,
+        :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{rest[:client_cert]}")),
+        :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{rest[:private_key]}")),
+        :ssl_ca_file     => "#{rest[:ca_cert]}",
+)
+
     begin
-      RestClient.post url, resourceHash.to_json, :content_type => :json
+#      RestClient.post url, resourceHash.to_json, :content_type => :json
+      ssl_rest.post(resourceHash.to_json, :content_type => 'application/json')
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{rest[:ip]}:#{rest[:port]})"
@@ -93,7 +127,15 @@ class Puppet::Provider::Rest < Puppet::Provider
   
   def self.get_json_from_url(url)
     begin
-      response = RestClient.get url
+      rest = get_rest_info
+      ssl_rest = RestClient::Resource.new(
+        url,
+        :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{rest[:client_cert]}")),
+        :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{rest[:private_key]}")),
+        :ssl_ca_file     => "#{rest[:ca_cert]}",
+)
+      Puppet.debug("Using client cert at #{rest[:client_cert]} and private key at #{rest[:private_key]} with CA #{rest[:ca_cert]}.")
+      response = ssl_rest.get
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
@@ -110,7 +152,7 @@ class Puppet::Provider::Rest < Puppet::Provider
   
   def self.get_server_version()
     rest = get_rest_info
-    url = "http://#{rest[:ip]}:#{rest[:port]}/api"    
+    url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api"    
     
     responseJson = get_json_from_url(url)
     version = responseJson["version"]["server"] || "Unknown"            
