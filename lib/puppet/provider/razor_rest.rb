@@ -26,14 +26,15 @@ class Puppet::Provider::Rest < Puppet::Provider
       hostname = yamldata['hostname']
     else
       hostname = 'localhost'
-    end    
-    
+    end
+
     if yamldata.include?('api_port')
       port = yamldata['api_port']
     else
       port = 8150
     end
-     if yamldata.include?('http_method')
+
+    if yamldata.include?('http_method')
       http = yamldata['http_method']
     else
       http = 'http'
@@ -100,31 +101,36 @@ class Puppet::Provider::Rest < Puppet::Provider
     end    
     
     Puppet.debug("Retrieved #{type} from REST API: #{objects}")
-    
+
     objects
   end
-  
-  def post_command(command, resourceHash)     
-    Puppet.debug("REST API => API: #{command}")    
-    
+
+  def post_command(command, resourceHash)
+    Puppet.debug("REST API => API: #{command}")
+
     rest = self.class.get_rest_info
     url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api/commands/#{command}"
-    ssl_rest = RestClient::Resource.new(
+
+    if rest[:port] == 'https'
+      ssl_rest = RestClient::Resource.new(
         url,
         :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{rest[:client_cert]}")),
         :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{rest[:private_key]}")),
         :ssl_ca_file     => "#{rest[:ca_cert]}",
 )
+      rest = ssl_rest.post(resourceHash.to_json, :content_type => 'application/json')
+    else
+      rest = RestClient.post url, resourceHash.to_json, :content_type => :json
+
 
     begin
-#      RestClient.post url, resourceHash.to_json, :content_type => :json
-      ssl_rest.post(resourceHash.to_json, :content_type => 'application/json')
+    rest
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{rest[:ip]}:#{rest[:port]})"
-    end       
+    end
   end
-  
+
   def self.get_json_from_url(url)
     begin
       rest = get_rest_info
@@ -140,22 +146,22 @@ class Puppet::Provider::Rest < Puppet::Provider
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
     end
-  
+
     begin
       responseJson = JSON.parse(response)
     rescue
       raise "Could not parse the JSON response from Razor: " + response
     end
-  
+
     responseJson
   end
-  
+
   def self.get_server_version()
     rest = get_rest_info
-    url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api"    
-    
+    url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api"
+
     responseJson = get_json_from_url(url)
-    version = responseJson["version"]["server"] || "Unknown"            
+    version = responseJson["version"]["server"] || "Unknown"
     version
   end
 end
