@@ -7,21 +7,21 @@ end
 
 class Puppet::Provider::Rest < Puppet::Provider
   desc "Razor API REST calls"
-  
+
   confine :feature => :json
   confine :feature => :rest_client
-  
+
   def initialize(value={})
     super(value)
     @property_flush = {} 
   end
-  
+
   def self.get_rest_info
     config_file = "/etc/razor/api.yaml"
 
-    data = File.read(config_file) or raise "Could not read setting file #{config_file}"    
+    data = File.read(config_file) or raise "Could not read setting file #{config_file}"
     yamldata = YAML.load(data)
-    
+
     if yamldata.include?('hostname')
       hostname = yamldata['hostname']
     else
@@ -51,15 +51,15 @@ class Puppet::Provider::Rest < Puppet::Provider
     else
       private_key = "/etc/puppetlabs/puppet/ssl/private_keys/#{hostname}.pem"
     end
-    
+
     if yamldata.include?('ca_cert')
       ca_cert = yamldata['ca_cert']
     else
       ca_cert = '/etc/puppetlabs/puppet/ssl/certs/ca.pem'
     end
-    
+
     # TODO - Shiro Authentication
-        
+
     { :ip   => hostname,
       :port => port,
       :http => http,
@@ -67,39 +67,39 @@ class Puppet::Provider::Rest < Puppet::Provider
       :private_key => private_key,
       :ca_cert => ca_cert }
   end
-  
-  def exists?    
+
+  def exists?
     @property_hash[:ensure] == :present
   end
-  
+
   def create
     @property_flush[:ensure] = :present
   end
 
-  def destroy        
+  def destroy
     @property_flush[:ensure] = :absent
   end
-        
-  def self.prefetch(resources)        
+
+  def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
         resource.provider = prov
       end
     end
-  end  
-  
-  def self.get_objects(type)    
+  end
+
+  def self.get_objects(type)
     rest = get_rest_info
     url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api/collections/#{type}"
-    
+
     responseJson = get_json_from_url(url)
 
     items = responseJson["items"]
 
-    objects = items.collect do |item|       
+    objects = items.collect do |item|
       get_object(item['name'], item['id'])
-    end    
-    
+    end
+
     Puppet.debug("Retrieved #{type} from REST API: #{objects}")
 
     objects
@@ -121,7 +121,7 @@ class Puppet::Provider::Rest < Puppet::Provider
       rest = ssl_rest.post(resourceHash.to_json, :content_type => 'application/json')
     else
       rest = RestClient.post url, resourceHash.to_json, :content_type => :json
-
+    end
 
     begin
     rest
