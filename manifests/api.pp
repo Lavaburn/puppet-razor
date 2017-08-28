@@ -16,7 +16,7 @@
 class razor::api (
   String $hostname = 'localhost',
   Variant[Undef, Integer] $port = undef,
-  Variant[String, Enum['http', 'https']] $http_method = 'http',
+  Enum['http', 'https'] $http_method = 'http',
   Variant[Undef, String] $client_cert = undef,
   Variant[Undef, String] $private_key = undef,
   Variant[Undef, String] $ca_cert = undef,
