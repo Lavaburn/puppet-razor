@@ -31,11 +31,14 @@ class razor::server inherits razor {
             'trusty','utopic','vivid', 'wily': {
               # Trusty - OK
             }
-            'xenial', 'yakkety', 'zesty': {
-              fail("Ubuntu Xenial (>= 16.04) is not supported yet! ${::lsbdistcodename}")
+            'xenial', 'yakkety', 'zesty', 'artful': {
+              # Xenial - OK
+            }
+            'bionic': {
+              fail("Ubuntu Xenial (>= 18.04) is not supported yet! ${::lsbdistcodename}")
             }
             default: {
-              fail("Ubuntu < 10.04 and >= 16.04 is not supported: ${::lsbdistcodename}")
+              fail("Ubuntu < 10.04 and >= 18.04 is not supported: ${::lsbdistcodename}")
             }
           }
         }
