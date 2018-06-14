@@ -47,8 +47,8 @@ Modules:
 ## Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
-* [https://github.com/TomPoulton/hiera-eyaml]
-* [https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
+* [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml)
+* [automatic-parameter-lookup](https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup)
 
 Make sure to include all dependencies as per above.
 
@@ -207,7 +207,7 @@ For running acceptance testing (beaker/vagrant):
 3. bundle install --binstubs
 4. rake beaker:ubuntu-12-04
 
-##Copyright
+## Copyright
 
    Copyright 2017 Nicolas Truyens
 
