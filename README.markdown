@@ -1,13 +1,13 @@
 # Puppet Module for Razor
 
-##Overview
+## Overview
 
 This module installs and sets up Razor.
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/Lavaburn/razor.svg)](https://forge.puppetlabs.com/Lavaburn/razor)
 [![Travis CI](http://img.shields.io/travis/Lavaburn/puppet-razor.svg)](http://travis-ci.org/Lavaburn/puppet-razor)
 
-##Table of Contents
+## Table of Contents
 
 1. [Dependencies](#dependencies)
 2. [Usage](#usage)
@@ -17,7 +17,7 @@ This module installs and sets up Razor.
 6. [Copyright](#copyright)
 
 
-##Dependencies
+## Dependencies
 
 The Database should be postgres >= 9.1
 
@@ -44,11 +44,11 @@ Modules:
 	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
 	- puppet/archive module	
 	
-##Usage
+## Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
-* [https://github.com/TomPoulton/hiera-eyaml]
-* [https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup]
+* [hiera-eyaml](https://github.com/TomPoulton/hiera-eyaml)
+* [automatic-parameter-lookup](https://docs.puppetlabs.com/hiera/1/puppet.html#automatic-parameter-lookup)
 
 Make sure to include all dependencies as per above.
 
@@ -82,7 +82,7 @@ API calls will only start working a few minutes after the service starting.
 [suggestions welcome to fix that]
 
 
-##Reference
+## Reference
 
 You should only use the 'razor' class.
 
@@ -181,7 +181,7 @@ razor_tag { 'small':
             Available providers are:
   * rest: REST provider for Razor broker
 
-##Compatibility
+## Compatibility
 * compile_microkernel only works on RHEL/CentOS/Fedora (Razor Microkernel constraint)
 * enable_server requires Postgres >= 9.1
 
@@ -191,7 +191,7 @@ This module has been tested using Beaker with Puppet 4.3.2 (Ruby 2.1.8) on:
 * CentOS 6.6   (complete without microkernel compilation) - Razor Server 1.0.0 to 1.5.0
 * CentOS 7.2   (complete with microkernel compilation) - Razor Server 1.4.0 (!) to 1.5.0
 
-##Testing
+## Testing
 
 Dependencies:
 - Ruby >= 2.2.0 < 2.4.0
@@ -207,7 +207,7 @@ For running acceptance testing (beaker/vagrant):
 3. bundle install --binstubs
 4. rake beaker:ubuntu-12-04
 
-##Copyright
+## Copyright
 
    Copyright 2017 Nicolas Truyens
 
