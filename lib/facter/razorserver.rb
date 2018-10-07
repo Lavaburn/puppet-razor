@@ -3,7 +3,7 @@
 #
 # Copyright (c) 2017 Nicolas Truyens <nicolas@truyens.com>
 
-if File.exist?("/usr/local/bin/razor")
+if File.exist?("/opt/puppetlabs/puppet/bin/razor")
   Facter.add('razorserver') do
     confine :kernel => :Linux
   
@@ -14,13 +14,13 @@ if File.exist?("/usr/local/bin/razor")
         port8150 = port8150_s.gsub(/\s+/, '').to_i
   
         if port8150 > 0
-          razor = Facter::Core::Execution.exec('/usr/local/bin/razor -u http://localhost:8150/api -v | /bin/grep "Razor Server version"')
+          razor = Facter::Core::Execution.exec('/opt/puppetlabs/puppet/bin/razor -u http://localhost:8150/api -v | /bin/grep "Razor Server version"')
         else
           port8080_s = Facter::Core::Execution.exec('/bin/netstat -ln | /bin/grep 8080 | /usr/bin/wc -l')
           port8080 = port8080_s.gsub(/\s+/, '').to_i
   
           razor = if port8080 > 0
-                    Facter::Core::Execution.exec('/usr/local/bin/razor -u http://localhost:8080/api -v | /bin/grep "Razor Server version"')
+                    Facter::Core::Execution.exec('/opt/puppetlabs/puppet/bin/razor -u http://localhost:8080/api -v | /bin/grep "Razor Server version"')
                   else
                     ''
                   end

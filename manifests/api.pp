@@ -40,10 +40,11 @@ class razor::api (
     content => template('razor/api.yaml.erb')
   }
 
-  # Dependency Gems Installation
-  if versioncmp($::puppetversion, '4.0.0') < 0 {
-    ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'gem'})
-  } else {
-    ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'puppet_gem'})
+  # Dependencies
+  if ($::operatingsystem == 'Ubuntu') {
+    ensure_packages(['build-essential', 'g++'], {'ensure' => 'present'})
   }
+
+  # Dependency Gems Installation
+  ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'puppet_gem'})
 }

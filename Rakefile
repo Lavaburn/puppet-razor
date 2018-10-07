@@ -1,60 +1,42 @@
+# Gems: Rake tasks
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet-lint/tasks/puppet-lint'
-require 'puppet-syntax/tasks/puppet-syntax'
+require 'ra10ke'
 
-# These two gems aren't always present, for instance
-# on Travis with --without development
+# These two gems aren't always present (for instance on Travis with --without development).
 begin
   require 'puppet_blacksmith/rake_tasks'
 rescue LoadError
 end
 
 # Directories that don't need to be checked (Lint/Syntax)
-exclude_paths = [
+exclude_dirs = [
 	"spec/**/*",
   "examples/**/*",
   "pkg/**/*",
   "test/**/*",
 ]
 
-
-# Settings for syntax checker
-PuppetSyntax.exclude_paths = exclude_paths
-
-
-# Overwrite default lint task
-Rake::Task[:lint].clear
-# Puppet Lint config
 PuppetLint::RakeTask.new :lint do |config|
-  #config.relative = true           # BUG in 1.1.0 - does not work ?  
-  config.with_context = true  
-  config.fail_on_warnings = false
-  
-  config.fix = false                # TODO does not actually fix anything
-  
-  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
-  
-  config.disable_checks = [ "80chars", "class_inherits_from_params_class" ] # class_parameter_defaults
-    
-  config.ignore_paths = exclude_paths
+  config.ignore_paths = exclude_dirs
+  config.disable_checks = [
+    "80chars", "140chars", 
+    "variable_is_lowercase", "class_inherits_from_params_class",
+    "relative_classname_inclusion", "trailing_comma",
+    "variable_contains_upcase", "version_comparison",
+    "variable_is_lowercase", "arrow_on_right_operand_line"
+  ] # TODO
+
+  config.with_context = true
+  config.relative = true
+  #  config.log_format = '%{filename} - %{message}'
+  #  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
 end
 
-
-# Extra Tasks
-desc "Check Puppetfile syntax"
-task :puppetfile do
-  sh "env PUPPETFILE_DIR=. r10k -v INFO puppetfile check"
-end
-
-desc "Run acceptance tests"
-RSpec::Core::RakeTask.new(:acceptance) do |t|
-	t.pattern = 'spec/acceptance'
-end
-
+# Group tests
 desc "Run syntax, lint, and spec tests."
 task :test => [
 	:syntax,
-	:puppetfile,
+	'r10k:syntax',
 	:lint,
 	:metadata_lint,
 	:spec,

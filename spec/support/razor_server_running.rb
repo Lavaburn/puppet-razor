@@ -15,7 +15,7 @@ shared_examples 'a running razor server' do |port, microkernel, version_expected
     its(:exit_status) { should eq(0) }
   end
         
-  describe command("razor -u http://localhost:#{port}/api -v") do
+  describe command("/opt/puppetlabs/puppet/bin/razor -u http://localhost:#{port}/api -v") do
     its(:exit_status) { should eq(0) }
     its(:stdout) { should contain("Razor Server version: #{version_expected}") }
   end
