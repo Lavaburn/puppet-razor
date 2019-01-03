@@ -3,14 +3,17 @@ language: ruby
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
 rvm:
-  - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.0
+# Travis-CI: Bundler not installed
+#  - 2.1.10
+#  - 2.2.10
+  - 2.3.8
+  - 2.4.5
+  - 2.5.3
+  - 2.6.0
 script: bundle exec rake test
 env:
-  - PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.4.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 4.6.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 4.8.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.10.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.0.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 5.5.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 6.0.0" STRICT_VARIABLES=yes
