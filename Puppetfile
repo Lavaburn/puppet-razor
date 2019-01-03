@@ -2,9 +2,10 @@
 forge "https://forgeapi.puppetlabs.com"
 
 mod 'adrien/filemapper'
-mod 'maestrodev/wget'
+mod 'puppet/wget'
 mod 'puppet/archive'
 mod 'puppetlabs/apt'
+mod 'puppetlabs/augeas_core'
 mod 'puppetlabs/concat'
 mod 'puppetlabs/postgresql'
 mod 'puppetlabs/stdlib'

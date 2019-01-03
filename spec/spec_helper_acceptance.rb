@@ -60,7 +60,7 @@ RSpec.configure do |c|
         end
 
         # Setup puppet module dependencies
-        on agent, puppet('module','install','maestrodev/wget'),       { :acceptable_exit_codes => [0,1] }
+        on agent, puppet('module','install','puppet/wget'),           { :acceptable_exit_codes => [0,1] }
         on agent, puppet('module','install','puppet/archive'),        { :acceptable_exit_codes => [0,1] }
         on agent, puppet('module','install','puppetlabs/postgresql'), { :acceptable_exit_codes => [0,1] }
         on agent, puppet('module','install','puppetlabs/tftp'),       { :acceptable_exit_codes => [0,1] }          
