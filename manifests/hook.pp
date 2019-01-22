@@ -18,8 +18,11 @@ define razor::hook (
   Package[$::razor::server_package_name]
   ->
   file { "${root}/${name}.hook":
-    ensure  => 'directory',
-    source  => "puppet:///modules/${module}/${directory}/${name}.hook",
-    recurse => true,
+    ensure             => 'directory',
+    source             => "puppet:///modules/${module}/${directory}/${name}.hook",
+    recurse            => true,
+    owner              => 'root',
+    group              => 'root',
+    source_permissions => 'use',
   }
 }
