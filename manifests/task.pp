@@ -7,19 +7,25 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 define razor::task (
-  String $module    = 'razor',
-  String $directory = 'tasks',
-  String $root      = "${::razor::data_root_path}/tasks",
+  String $module                 = 'razor',
+  String $directory              = 'tasks',
+  String $root                   = "${::razor::data_root_path}/tasks",
+  Variant[Undef, String] $source = undef,
 ) {
   # Validation
   validate_absolute_path($root)
+
+  $source_ = $source ? {
+    undef   => "puppet:///modules/${module}/${directory}/${name}.task",
+    default => $source,
+  }
 
   # Create directory
   Package[$::razor::server_package_name]
   ->
   file { "${root}/${name}.task":
     ensure  => 'directory',
-    source  => "puppet:///modules/${module}/${directory}/${name}.task",
+    source  => $source_,
     recurse => true,
   }
 }
