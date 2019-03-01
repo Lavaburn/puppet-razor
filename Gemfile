@@ -11,7 +11,7 @@ group :test do
 	
 	gem "parallel_tests"
 	
-	gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.3.2'
+	gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.6.0'
 	gem "puppetlabs_spec_helper"
 	
 	gem "r10k"		
