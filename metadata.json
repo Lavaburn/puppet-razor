@@ -1,6 +1,6 @@
 {
   "name": "Lavaburn-razor",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "author": "Nicolas Truyens (Lavaburn)",
   "license": "Apache-2.0",
   "summary": "Puppet module for managing (Puppetlabs) Razor",
@@ -24,14 +24,15 @@
       "operatingsystemrelease": [
         "10.04",
         "12.04",
-        "14.04"
+        "14.04",
+        "16.04"
       ]
     }
   ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.0.0 <5.0.0"
+      "version_requirement": ">=4.0.0 <6.0.0"
     },
     {
       "name": "reidmv/yamlfile",

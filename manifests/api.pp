@@ -14,12 +14,15 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 class razor::api (
-  String $hostname = 'localhost',
+  String $hostname              = 'localhost',
   Variant[Undef, Integer] $port = undef,
   Enum['http', 'https'] $http_method = 'http',
   Variant[Undef, String] $client_cert = undef,
   Variant[Undef, String] $private_key = undef,
   Variant[Undef, String] $ca_cert = undef,
+  String $rest_client_version   = present,
+  String $gem_provider          = 'puppet_gem'
+  
   # TODO - Shiro Authentication
 ) {
   # Parameters
@@ -44,10 +47,11 @@ class razor::api (
     content => template('razor/api.yaml.erb')
   }
 
-  # Dependency Gems Installation
-  if versioncmp($::puppetversion, '4.0.0') < 0 {
-    ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'gem'})
-  } else {
-    ensure_packages(['rest-client'], {'ensure' => 'present', 'provider' => 'puppet_gem'})
+  # Dependencies
+  if ($::operatingsystem == 'Ubuntu') {
+    ensure_packages(['build-essential', 'g++'], {'ensure' => 'present'})
   }
+
+  # Dependency Gems Installation
+  ensure_packages(['rest-client'], {'ensure' => $rest_client_version, 'provider' => $gem_provider})
 }

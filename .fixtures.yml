@@ -6,35 +6,38 @@ fixtures:
       repo: "adrien/filemapper"
       ref: "1.1.3" 
     wget:
-      repo: "maestrodev/wget"
-      ref: "1.7.3"      
+      repo: "puppet/wget"
+      ref: "2.0.1"
     archive:
       repo: "puppet/archive"
-      ref: "1.2.0"  
+      ref: "3.2.1"  
     apt:
       repo: "puppetlabs/apt"
-      ref: "2.3.0"  
+      ref: "6.2.1"
+    augeas_core:
+      repo: "puppetlabs/augeas_core"
+      ref: "1.0.3"  
     concat:
       repo: "puppetlabs/concat"
-      ref: "2.2.0"
+      ref: "5.2.0"
     postgresql:
       repo: "puppetlabs/postgresql"
-      ref: "4.8.0"
+      ref: "5.11.0"
     stdlib:
      repo: "puppetlabs/stdlib"
-     ref: "4.14.0"
+     ref: "5.1.0"
     tftp:
       repo: "puppetlabs/tftp"
-      ref: "0.2.3"
+      ref: "1.0.0"
     vcsrepo:
       repo: "puppetlabs/vcsrepo"
-      ref: "1.5.0"    
+      ref: "2.4.0"    
     xinetd:
       repo: "puppetlabs/xinetd"
-      ref: "2.0.0"  
+      ref: "3.1.0"  
     yamlfile:
       repo: "reidmv/yamlfile"
-      ref: "0.2.0"    
+      ref: "0.2.0" 
       
   symlinks:
     razor: "#{source_dir}"

@@ -62,8 +62,8 @@ class razor (
   Boolean $compile_microkernel = $razor::params::compile_microkernel,
 
   # Client
-  String $client_package_name    = $razor::params::client_package_name,
-  String $client_package_version = 'latest',
+  String $client_package_name                    = $razor::params::client_package_name,
+  Variant[Undef, String] $client_package_version = undef,
 
   # DB
   String $database_hostname                 = 'localhost',

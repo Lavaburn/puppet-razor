@@ -145,12 +145,13 @@ class Puppet::Provider::Rest < Puppet::Provider
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
+      return nil
     end
 
     begin
       responseJson = JSON.parse(response)
     rescue
-      raise "Could not parse the JSON response from Razor: " + response
+      raise "Could not parse the JSON response from Razor: #{response}"
     end
 
     responseJson
