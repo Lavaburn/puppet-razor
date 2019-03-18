@@ -22,7 +22,7 @@ class razor::api (
   Variant[Undef, String] $ca_cert = undef,
   String $rest_client_version   = present,
   String $gem_provider          = 'puppet_gem'
-  
+
   # TODO - Shiro Authentication
 ) {
   # Parameters
