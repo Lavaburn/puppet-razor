@@ -54,4 +54,11 @@ class razor::server::configure inherits razor {
     value      => $::razor::match_nodes_on,
     value_type => 'array',
   } -> Anchor['razor-server-postconfigure']
+
+  # Allow localhost API calls (> 1.3.0)
+  Anchor['razor-server-preconfigure'] ->
+  ::razor::razor_yaml_setting{ 'all/auth/allow_localhost':
+    ensure => 'present',
+    value  => "true",# lint:ignore:quoted_booleans lint:ignore:double_quoted_strings
+  }
 }

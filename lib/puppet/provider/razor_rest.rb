@@ -17,7 +17,7 @@ class Puppet::Provider::Rest < Puppet::Provider
   end
 
   def self.get_rest_info
-    config_file = "/etc/razor/api.yaml"
+    config_file = "/etc/razor/api.yaml"   # TODO - Error: Failed to apply catalog: No such file or directory @ rb_sysopen - /etc/razor/api.yaml
 
     data = File.read(config_file) or raise "Could not read setting file #{config_file}"
     yamldata = YAML.load(data)
@@ -60,12 +60,12 @@ class Puppet::Provider::Rest < Puppet::Provider
 
     # TODO - Shiro Authentication
 
-    { :ip   => hostname,
-      :port => port,
-      :http => http,
+    { :ip          => hostname,
+      :port        => port,
+      :http        => http,
       :client_cert => client_cert,
       :private_key => private_key,
-      :ca_cert => ca_cert }
+      :ca_cert     => ca_cert }
   end
 
   def exists?
@@ -111,42 +111,47 @@ class Puppet::Provider::Rest < Puppet::Provider
     rest = self.class.get_rest_info
     url = "#{rest[:http]}://#{rest[:ip]}:#{rest[:port]}/api/commands/#{command}"
 
-    if rest[:port] == 'https'
+    if rest[:http] == 'https'
       ssl_rest = RestClient::Resource.new(
         url,
         :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{rest[:client_cert]}")),
         :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{rest[:private_key]}")),
-        :ssl_ca_file     => "#{rest[:ca_cert]}",
-)
+        :ssl_ca_file     => "#{rest[:ca_cert]}"
+      )
       rest = ssl_rest.post(resourceHash.to_json, :content_type => 'application/json')
     else
       rest = RestClient.post url, resourceHash.to_json, :content_type => :json
     end
 
     begin
-    rest
+      rest
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
-      Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{rest[:ip]}:#{rest[:port]})"
-      Puppet.warning "#{e}"
+      Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{url})"
     end
   end
 
   def self.get_json_from_url(url)
-    begin
-      rest = get_rest_info
-      ssl_rest = RestClient::Resource.new(
+    rest = get_rest_info
+    
+    if rest[:http] == 'https'
+      Puppet.debug("Using client cert at #{rest[:client_cert]} and private key at #{rest[:private_key]} with CA #{rest[:ca_cert]}.")
+      
+      rest = RestClient::Resource.new(
         url,
         :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{rest[:client_cert]}")),
         :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{rest[:private_key]}")),
-        :ssl_ca_file     => "#{rest[:ca_cert]}",
-)
-      Puppet.debug("Using client cert at #{rest[:client_cert]} and private key at #{rest[:private_key]} with CA #{rest[:ca_cert]}.")
-      response = ssl_rest.get
+        :ssl_ca_file     => "#{rest[:ca_cert]}"
+      )
+    else
+      rest = RestClient::Resource.new(url)
+    end
+    
+    begin
+      response = rest.get
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
-      Puppet.warning "#{e}"
       return nil
     end
 
