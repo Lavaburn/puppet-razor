@@ -3,7 +3,7 @@ require 'spec_helper_acceptance'
 describe 'razor class' do    
   # Version 1.0.0 - 1.0.1 - first "stable" - no longer supporting 0.x
   context 'razor 1.0.1 without microkernel' do    
-    #before { skip("Skipping installation of 1.0.1") }
+    before { skip("Skipping installation of 1.0.1") }
 
     let(:repository) { 'puppetlabs3' }
     let(:version) { '1.0.1' }

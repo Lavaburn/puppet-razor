@@ -13,6 +13,7 @@ describe 'razor::api' do
       {
         "operatingsystem" => "Ubuntu",
         "operatingsystemrelease" => [
+          "12.04",
           "14.04",
           "16.04"
         ]
@@ -67,13 +68,18 @@ describe 'razor::api' do
         it { should contain_package('rest-client') }
       end
       
-      context "Version 1.5.0" do
+      context "Version 1.5.0 SSL" do
         let(:facts) {
           facts
         }
         
         let(:params) { {
-          :port   => 8081,
+          :http_method => 'https',
+          :port        => 8081,
+          :client_cert => '/tmp/client.crt',
+          :private_key => '/tmp/client.key',
+          :ca_cert     => '/tmp/ca.crt',
+          
         } }
         
         it { should compile.with_all_deps }
@@ -81,7 +87,13 @@ describe 'razor::api' do
         it { should contain_file('/etc/razor') }
         it { should contain_file('/etc/razor/api.yaml').with_content(
           /api_port: 8081/
-        ) }        
+        ) }
+        it { should contain_file('/etc/razor/api.yaml').with_content(
+          /http_method: https/
+        ) }
+        it { should contain_file('/etc/razor/api.yaml').with_content(
+          /client_cert: \/tmp\/client.crt/
+        ) }
         it { should contain_package('rest-client') }
       end
     end

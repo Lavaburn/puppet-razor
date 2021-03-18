@@ -13,12 +13,11 @@ class razor::tftp inherits razor {
   if ($::razor::tftp_root == undef) {
     $directory = $::tftp::directory
   } else {
-    validate_absolute_path($::razor::tftp_root)
     $directory = $::razor::tftp_root
   }
 
   # undionly.kpxe
-  wget::fetch { 'http://boot.ipxe.org/undionly.kpxe':
+  wget::fetch { $::razor::undionly_kpxe_url:
     destination => "${directory}/undionly.kpxe",
   } ->
 
@@ -28,6 +27,7 @@ class razor::tftp inherits razor {
   }
 
   # bootstrap.ipxe
+  # TODO: Add support for HTTPS ?
   wget::fetch { "http://${::razor::server_hostname}:${::razor::real_server_http_port}/api/microkernel/bootstrap":
     destination => "${directory}/bootstrap.ipxe",
   } ->

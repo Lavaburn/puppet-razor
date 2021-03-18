@@ -13,11 +13,6 @@ class razor::server inherits razor {
   assert_type(String, $::razor::database_password) |$expected, $actual| {
     fail('database_password is a required parameter with enable_server = true.')
   }
-  validate_string($::razor::database_hostname, $::razor::database_name)
-  validate_string($::razor::database_username, $::razor::database_password)
-  validate_string($::razor::server_package_name, $::razor::server_package_version)
-  validate_absolute_path($::razor::server_config_file)
-  validate_absolute_path($::razor::repo_store)
 
   # Compatibility
   case $::osfamily {
@@ -107,61 +102,13 @@ class razor::server inherits razor {
   }
 
   # Installation
-  if ($::razor::enable_aio_support == false) {
-    # Torquebox was auto-dependency < 1.0.0, but no longer by 1.3.0
-    # From 1.4.0 (AIO packaging), it is included in the server package.
-    package { $::razor::torquebox_package_name:
-      ensure => $::razor::torquebox_package_version,
-    } -> Package[$::razor::server_package_name]
-  }
+  contain razor::server::install
 
-  # Requirement for version >=1.0.0 installation on Ubuntu 12.04
-  # Package does not auto-require it!
-  package { $::razor::torquebox_package_name:
-    ensure => $::razor::torquebox_package_version,
-  } ->
+  # Configuration
+  contain razor::server::configure
 
-  package { $::razor::server_package_name:
-    ensure => $::razor::server_package_version,
-  } ~>  Exec['razor-migrate-database']
-
-  # Configuration File
-  ::razor::razor_yaml_setting{ 'production/database_url':
-    ensure => 'present',
-    value  => "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
-  }
-
-
-  ::razor::razor_yaml_setting{ 'all/repo_store_root':
-    ensure => 'present',
-    value  => $::razor::repo_store_path
-  }
-
-  # Required configuration for database migration.
-  # Configuration file is purged on downgrade from 1.5 to 1.3...
-  ::razor::razor_yaml_setting{ 'all/match_nodes_on':
-    ensure     => 'present',
-    value      => $::razor::match_nodes_on,
-    value_type => 'array',
-  }
-
-  ::razor::razor_yaml_setting{'all/broker_path':
-    ensure => present,
-    target => $::razor::server_config_file,
-    value  => join(concat($::razor::server_broker_paths, "brokers"), ':')
-  }
-
-  ::razor::razor_yaml_setting{'all/hook_path':
-    ensure => present,
-    target => $::razor::server_config_file,
-    value  => join(concat($::razor::server_hook_paths, "hooks"), ':')
-  }
-
-  ::razor::razor_yaml_setting{'all/task_path':
-    ensure => present,
-    target => $::razor::server_config_file,
-    value  => join(concat($::razor::server_task_paths, "tasks"), ':')
-  }
+  # Migration
+  contain razor::server::migrate
 
   # Service
   service { $::razor::server_service_name:
@@ -169,41 +116,14 @@ class razor::server inherits razor {
     enable => true,
   }
 
-  # Setup the Database
-  exec { 'razor-migrate-database':
-    cwd         => $::razor::data_root_path,
-    path        => [
-      '/bin', '/sbin',
-      '/usr/bin', '/usr/sbin',
-      '/usr/local/bin', '/usr/local/sbin',
-      $::razor::binary_path, $::razor::jruby_binary_path,
-    ],
-    command     => 'razor-admin -e production migrate-database',
-    refreshonly => true,
-    notify      => [
-      Exec['razor-redeploy'],
-      Service[$::razor::server_service_name]
-    ],
-  }
-
-  # Redeploy application (required when upgrading)
-  $source    = "source ${::razor::real_config_dir}/razor-torquebox.sh"
-  $torquebox = "torquebox deploy ${::razor::data_root_path} --env=production"
-  exec { 'razor-redeploy':
-    cwd         => $::razor::data_root_path,
-    path        => [
-      '/bin', '/sbin',
-      '/usr/bin', '/usr/sbin',
-      '/usr/local/bin', '/usr/local/sbin',
-      $::razor::torquebox_binary_path,
-    ],
-    command     => "bash -c '${source}; ${torquebox}'",
-    refreshonly => true,
-    notify      => Service[$::razor::server_service_name],
-  }
-
   # Ordering
-  Package[$::razor::server_package_name] -> Yaml_setting<| tag == 'razor-server' |> -> Service[$::razor::server_service_name]
-  Yaml_setting<| tag == 'razor-server' |> ~> Exec['razor-migrate-database']
-  Yaml_setting<| tag == 'razor-server' |> ~> Service[$::razor::server_service_name]
+  Anchor['razor-server-postinstall'] -> Anchor['razor-server-preconfigure']
+  Anchor['razor-server-postconfigure'] -> Anchor['razor-server-migrate']
+  Anchor['razor-server-postconfigure'] -> Service[$::razor::server_service_name]
+
+  if ($::razor::server_auto_deploy) {
+    # Migrate Database after package install/upgrade
+    Anchor['razor-server-postinstall'] ~> Anchor['razor-server-migrate']
+    Anchor['razor-server-migrate'] ~> Service[$::razor::server_service_name]
+  }
 }

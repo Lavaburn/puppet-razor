@@ -36,7 +36,7 @@ end
 desc "Run syntax, lint, and spec tests."
 task :test => [
 	:syntax,
-	'r10k:syntax',
+#	'r10k:syntax',        # Seems to be broken in Ruby 2.5.7 ?
 	:lint,
 	:metadata_lint,
 	:spec,
@@ -47,3 +47,6 @@ desc "Release the Puppet module, doing a clean, build, tag, push and bump_commit
 task :release => ['module:clean', 'build', 'module:tag', 'module:push', 'module:bump_commit'] do
   puts "Don't forget to push your tags to remote git repo(s)"
 end
+
+# r10k:syntax
+Ra10ke::RakeTask.new

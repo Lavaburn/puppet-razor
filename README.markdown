@@ -23,6 +23,7 @@ The Database should be postgres >= 9.1
 
 Modules:
 - reidmv/yamlfile (REQUIRED)
+  * voxpupuli/puppet-filemapper 1.1.3 - Future versions not supported at present.
 - puppetlabs/stdlib (REQUIRED)
 - puppetlabs/postgresql (Optional)
   * puppetlabs/apt (postgresql)
@@ -43,7 +44,16 @@ Modules:
 * If you want to download/extract a microkernel, 
 	- Do not set microkernel_url to undef. (Default : puppetlabs precompiled)
 	- puppet/archive module	
-	
+
+## Notes
+
+The dependency on reidmv/yamlfile is causing issues in Puppet 6. This will require a different solution.
+
+Shiro Authentication is not fully tested. See notes in lib/puppet/provider/razo_rest.rb ?
+
+SSL/TLS is not fully tested.
+
+
 ## Usage
      
 It is highly recommended to put secret keys in Hiera-eyaml and use automatic parameter lookup
@@ -84,7 +94,50 @@ API calls will only start working a few minutes after the service starting.
 
 ## Reference
 
-You should only use the 'razor' class.
+### Classes
+
+#### razor
+```
+class { '::razor':
+    compile_microkernel   => false,
+    db_hostname           => $::fqdn,
+    db_database           => 'razor',
+    db_user               => 'razor',
+    db_password           => 'notsecret',
+}
+```
+This is the main class that can install client, server, database and tftp server (with microkernel download).
+Additionally, on CentOS, this class can also compile the microkernel.
+
+### Razor API
+```
+class { '::razor::api':
+    
+}
+```
+This class will set up configuration for the defined types.
+These use the REST API provided by the Razor Server.
+
+### Task
+```
+razor::task { 'task1':
+  module => 'mymodule1'
+}
+```
+
+### Hook Type
+```
+razor::hook_type { 'type1':
+  module => 'mymodule1'
+}
+```
+
+### Broker
+```
+razor::broker { 'broker1':
+  module => 'mymodule1'
+}
+```
 
 ### Types
 
@@ -181,6 +234,20 @@ razor_tag { 'small':
             Available providers are:
   * rest: REST provider for Razor broker
 
+#### razor_hook
+```
+razor_hook { 'a':
+  ensure        => 'present',
+  hook_type     => '',
+  configuration => {}
+}
+```
+- name: The hook name
+- ensure: The basic property that the resource should be in.
+          Valid values are `present`, `absent`.
+- hook_type: The hook type (as defined with razor::hook_type)   
+- configuration: A hash with hook configuration.
+  
 ## Compatibility
 * compile_microkernel only works on RHEL/CentOS/Fedora (Razor Microkernel constraint)
 * enable_server requires Postgres >= 9.1
@@ -193,19 +260,25 @@ This module has been tested using Beaker with Puppet 4.3.2 (Ruby 2.1.8) on:
 
 ## Testing
 
-Dependencies:
-- Ruby >= 2.2.0 < 2.4.0
-- Bundler (gem install bundler)
+The use of rvm is encouraged to simulate different Ruby environments.
 
-If you wish to test this module yourself:
-1. bundle install
-2. rake test
+Setup: gem install bundler && bundle install --binstubs
 
-For running acceptance testing (beaker/vagrant):
-1. gem uninstall bundler
-2. gem install bundler -v 1.10.6 # This is the last version that is compatible with Vagrant (last version: 1.8.1)
-3. bundle install --binstubs
-4. rake beaker:ubuntu-12-04
+### Spec test
+
+	 rake test
+	 
+### Acceptance Testing
+
+This requires some work... helpers are no longer compatible with Puppet APT repository
+
+PREVIOUSLY - Confirmed working on Ruby 2.4.5
+
+	rake beaker:ubuntu-12-04
+
+Notes:
+ * Possible issues with bundler: gem uninstall bundler && gem install bundler -v 1.10.6 [Vagrant 1.8.1]
+ * Possible issue with vagrant "unable to mount VirtualBox shared folders": plugin install vagrant-vbguest
 
 ## Copyright
 

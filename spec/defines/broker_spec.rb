@@ -9,6 +9,7 @@ describe 'razor::broker', :type => :define do
       {
         "operatingsystem" => "Ubuntu",
         "operatingsystemrelease" => [
+          "12.04",
           "14.04",
           "16.04"
         ]
@@ -52,6 +53,40 @@ describe 'razor::broker', :type => :define do
           'source' => "puppet:///modules/razor/brokers/puppet-xenserver.broker"
         ) }
       end
+
+      context "default_custom_source" do
+        let(:pre_condition) { 
+          dependencies() + razor_default()
+        }
+
+        let(:params) { {
+          :module     => 'mymodule',
+          :directory  => 'mybrokers',
+        } }
+        
+        it { should compile.with_all_deps }
+          
+        it { should contain_file('/opt/razor/brokers/puppet-xenserver.broker').with(
+          'source' => "puppet:///modules/mymodule/mybrokers/puppet-xenserver.broker"
+        ) }
+      end   
+      
+      context "aio_custom_paths" do
+        let(:pre_condition) { 
+          dependencies() + razor_default_aio()
+        }
+
+        let(:params) { {
+          :root     => '/tmp/brokers',
+          :source   => 'http://brokers/broker1',
+        } }
+        
+        it { should compile.with_all_deps }
+          
+        it { should contain_file('/tmp/brokers/puppet-xenserver.broker').with(
+          'source' => "http://brokers/broker1"
+        ) }
+      end      
     end
   end
 end

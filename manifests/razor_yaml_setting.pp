@@ -8,10 +8,10 @@
 #
 define razor::razor_yaml_setting (
   $value, # Untyped - can be many things
-  Variant[Undef, String] $value_type = undef,
   Enum['present', 'absent'] $ensure = 'present',
-  String $target      = $::razor::server_config_path,
-  String $export_tag  = 'razor-server'
+  Optional[String] $value_type      = undef,
+  String $target                    = $::razor::server_config_path,
+  String $export_tag                = 'razor-server'
 ) {
   yaml_setting { $name:
     ensure => $ensure,

@@ -13,6 +13,7 @@ describe 'razor' do
       {
         "operatingsystem" => "Ubuntu",
         "operatingsystemrelease" => [
+          "12.04",
           "14.04",
           "16.04"
         ]

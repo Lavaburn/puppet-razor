@@ -9,6 +9,7 @@ describe 'razor::task', :type => :define do
       {
         "operatingsystem" => "Ubuntu",
         "operatingsystemrelease" => [
+          "12.04",
           "14.04",
           "16.04"
         ]
@@ -52,6 +53,40 @@ describe 'razor::task', :type => :define do
           'source' => "puppet:///modules/razor/tasks/xenserver.task"
         ) }
       end   
-    end
+  
+      context "default_custom_source" do
+        let(:pre_condition) { 
+          dependencies() + razor_default()
+        }
+  
+        let(:params) { {
+          :module     => 'mymodule',
+          :directory  => 'mytasks',
+        } }
+        
+        it { should compile.with_all_deps }
+          
+        it { should contain_file('/opt/razor/tasks/xenserver.task').with(
+          'source' => "puppet:///modules/mymodule/mytasks/xenserver.task"
+        ) }
+      end   
+      
+      context "aio_custom_paths" do
+        let(:pre_condition) { 
+          dependencies() + razor_default_aio()
+        }
+  
+        let(:params) { {
+          :root     => '/tmp/tasks',
+          :source   => 'http://tasks/task1',
+        } }
+        
+        it { should compile.with_all_deps }
+          
+        it { should contain_file('/tmp/tasks/xenserver.task').with(
+          'source' => "http://tasks/task1"
+        ) }
+      end
+    end      
   end
 end

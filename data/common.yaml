@@ -1,0 +1,22 @@
+---
+razor::client_package_name: 'razor-client'
+razor::server_package_name: 'razor-server'
+razor::torquebox_package_name: 'razor-torquebox'
+
+razor::database_hostname: 'localhost'
+razor::database_name: 'razor_prod'
+razor::database_username: 'razor'
+
+razor::server_config_file: 'config.yaml'
+razor::server_service_name: 'razor-server'
+
+razor::server_task_paths: []
+razor::server_hook_paths: []
+razor::server_broker_paths: []
+
+razor::undionly_kpxe_url: 'http://boot.ipxe.org/undionly.kpxe'
+
+razor::microkernel_url: 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
+
+razor::match_nodes_on:
+  - 'mac'

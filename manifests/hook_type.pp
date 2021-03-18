@@ -8,10 +8,10 @@
 # Henrique Lindgren <henriquelindgren@gmail.com>
 #
 define razor::hook_type (
-  $module    = 'razor',
-  $directory = 'hooks',
-  $root      = "${::razor::data_root_path}/hooks",
-  $source    = undef,
+  String $module           = 'razor',
+  String $directory        = 'hooks',
+  String $root             = "${::razor::data_root_path}/hooks",
+  Optional[String] $source = undef,
 ) {
   # Validation
   validate_absolute_path($root)

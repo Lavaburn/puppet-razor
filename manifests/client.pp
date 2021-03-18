@@ -9,19 +9,7 @@
 # Nicolas Truyens <nicolas@truyens.com>
 #
 class razor::client inherits razor {
-  # TODO: razor client should follow ruby version (based on puppet version)
-
-  # Follow Server version
-  if ($::razor::client_package_version == undef) {
-    #if (versioncmp($::razor::server_package_version, '1.6.1') <= 0) {
-      $real_client_package_version = '1.3.0'
-    #} else {
-    #  $real_client_package_version = $::razor::server_package_version
-    #}
-  } else {
-    $real_client_package_version = $::razor::client_package_version
-  }
-
   # Install the ruby gem
-  ensure_packages([$::razor::client_package_name], {'ensure' => $real_client_package_version, 'provider' => 'puppet_gem'})
+  # The version could depend on both your puppet agent version (ruby env) and razor server version!
+  ensure_packages([$::razor::client_package_name], {'ensure' => $::razor::client_package_version, 'provider' => 'puppet_gem'})
 }

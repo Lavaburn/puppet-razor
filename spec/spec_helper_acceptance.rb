@@ -1,6 +1,13 @@
 # Gem includes
 require 'beaker-rspec'
+require 'beaker-rspec/spec_helper'
+require 'beaker-rspec/helpers/serverspec'
+
+require 'beaker-puppet'
+
+require 'beaker'
 require 'beaker/puppet_install_helper'
+
 require 'infrataster/rspec'
 
 # Helpers
@@ -16,11 +23,16 @@ proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 fixtures_dir = File.expand_path(File.join(proj_root, '/spec/fixtures'))
 module_path = '/etc/puppetlabs/code/environments/production/modules'
 
+agents.each do |agent|
+  on agent, 'export PATH=$PATH:/opt/puppetlabs/bin' 
+  on agent, 'echo "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/opt/puppetlabs/bin" > ~/.ssh/environment'  
+end
+
 # Set up before any test
 RSpec.configure do |c|
   c.formatter = :documentation
 
-  c.before :suite do
+  c.before :suite do    
     unless ENV['BEAKER_provision'] == 'no'
       # Fixes for installing puppet
       agents.each do |agent|

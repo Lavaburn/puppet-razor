@@ -11,9 +11,10 @@ fixtures:
     archive:
       repo: "puppet/archive"
       ref: "3.2.1"  
-    apt:
-      repo: "puppetlabs/apt"
-      ref: "6.2.1"
+# NOT USED BY MODULE - This slows down testing too much because of facter being run!!
+#    apt:
+#      repo: "puppetlabs/apt"
+#      ref: "6.2.1"
     augeas_core:
       repo: "puppetlabs/augeas_core"
       ref: "1.0.3"  
