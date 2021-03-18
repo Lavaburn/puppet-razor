@@ -16,8 +16,13 @@
 class razor::api (
   String $hostname              = 'localhost',
   Variant[Undef, Integer] $port = undef,
+  Enum['http', 'https'] $http_method = 'http',
+  Variant[Undef, String] $client_cert = undef,
+  Variant[Undef, String] $private_key = undef,
+  Variant[Undef, String] $ca_cert = undef,
   String $rest_client_version   = present,
-  String $gem_provider          = 'puppet_gem',
+  String $gem_provider          = 'puppet_gem'
+
   # TODO - Shiro Authentication
 ) {
   # Parameters
