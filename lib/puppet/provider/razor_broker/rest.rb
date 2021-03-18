@@ -2,32 +2,32 @@ require File.join(File.dirname(__FILE__), '..', 'razor_rest')
 
 Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Rest do
   desc "REST provider for Razor broker"
-  
+
   mk_resource_methods
-  
-  def flush    
-    if @property_flush[:ensure] == :absent      
+
+  def flush
+    if @property_flush[:ensure] == :absent
       delete_broker
-      return 
+      return
     end
-    
-    if @property_flush[:ensure] == :present      
+
+    if @property_flush[:ensure] == :present
       create_broker
-      return 
+      return
     end
-    
+
     update_broker
-  end  
+  end
 
   def self.instances
     get_objects(:brokers).collect do |object|
       new(object)
     end
   end
-  
+
   # TYPE SPECIFIC
   def self.get_object(name, url)
-    responseJson = get_json_from_url(url)    
+    responseJson = get_json_from_url(url)
 
     {
       :name           => responseJson['name'],
@@ -36,24 +36,24 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
       :ensure         => :present
     }
   end
-  
+
   def self.get_broker(name)
     rest = get_rest_info
-    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/brokers/#{name}" 
-    
-    get_object(name, url)    
+    url = "http://#{rest[:ip]}:#{rest[:port]}/api/collections/brokers/#{name}"
+
+    get_object(name, url)
   end
-  
-  private  
-  def create_broker  
-    resourceHash = {                    
+
+  private
+  def create_broker
+    resourceHash = {
       :name           => resource[:name],
       'broker_type'   => resource['broker_type'],
       :configuration  => resource['configuration'],
-    }      
+    }
     post_command('create-broker', resourceHash)
   end
-  
+
   def update_broker
     current_state = self.class.get_broker(resource[:name])
     updated = false
@@ -126,12 +126,12 @@ Puppet::Type.type(:razor_broker).provide :rest, :parent => Puppet::Provider::Res
             
     # Update the current info    
     @property_hash = self.class.get_broker(resource[:name])
-  end  
-  
+  end
+
   def delete_broker
-    resourceHash = {                    
+    resourceHash = {
       :name => resource[:name],
     }
-    post_command('delete-broker', resourceHash)    
-  end    
+    post_command('delete-broker', resourceHash)
+  end
 end

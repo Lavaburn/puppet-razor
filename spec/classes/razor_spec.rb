@@ -3,8 +3,8 @@ require 'spec_helper'
 describe 'razor' do
   Puppet::Util::Log.level = :warning
   Puppet::Util::Log.newdestination(:console)
-    
-  let(:pre_condition) { 
+
+  let(:pre_condition) {
     dependencies()
   }
 
@@ -34,8 +34,8 @@ describe 'razor' do
       }
         
   	  context "defaults" do
-        let(:params) { {        
-          # Defaults  
+        let(:params) { {
+          # Defaults
         } }
         
         $DB_regex = /jdbc:postgresql:\/\/localhost\/razor_prod\?user=razor&password=secret/      

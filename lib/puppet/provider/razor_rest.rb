@@ -13,7 +13,7 @@ class Puppet::Provider::Rest < Puppet::Provider
 
   def initialize(value={})
     super(value)
-    @property_flush = {} 
+    @property_flush = {}
   end
 
   def self.get_rest_info
@@ -128,6 +128,7 @@ class Puppet::Provider::Rest < Puppet::Provider
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to #{command} on Razor Server through REST interface (#{rest[:ip]}:#{rest[:port]})"
+      Puppet.warning "#{e}"
     end
   end
 
@@ -145,6 +146,7 @@ class Puppet::Provider::Rest < Puppet::Provider
     rescue => e
       Puppet.debug "Razor REST response: "+e.inspect
       Puppet.warning "Unable to contact Razor Server through REST interface (#{url})"
+      Puppet.warning "#{e}"
       return nil
     end
 

@@ -15,8 +15,10 @@ Puppet::Type.type(:razor_hook).provide :rest, :parent => Puppet::Provider::Rest 
       create_hook
       return 
     end
-    
-    update_hook
+
+    unless resource.mutable_configuration?
+      update_hook
+    end
   end  
 
   def self.instances

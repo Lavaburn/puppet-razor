@@ -7,7 +7,7 @@
 # * enable_db (boolean): Whether to configure Postgres DB for Razor (Default: true)
 # * enable_server (boolean): Whether to install/configure Razor Server (Default: true)
 # * enable_tftp (boolean): Whether to retrieve and "export" bootfiles to PXE Server (Default: true)
-# * compile_microkernel (boolean): See Params
+# * compile_microkernel (boolean): Whether to create new Microkernel for Razor (Default: false)
 # * client_package_name (string): See Params
 # * client_package_version (string): Package version for Razor Client (Default: 'latest')
 # * database_hostname (string): Hostname for Postgres DB (Default: 'localhost')
@@ -23,6 +23,8 @@
 # * server_hostname (string): The hostname of the TFTP server. (Default: $::ipaddress)
 # * tftp_root (string): The root directory for the TFTP server. (Default: undef)
 # * microkernel_url (string): See Params
+# * server_http_port (string): See Params
+# * server_https_port (string): See Params
 # * match_nodes_on (array): See Params
 # * enable_new_ports_support (boolean): Whether to use the new ports allocated from Razor 1.1.0  (Default: false)
 # * enable_aio_support (boolean): Whether to use AIO package paths from Razor 1.4.0  (Default: false)
@@ -63,7 +65,7 @@ class razor (
 
   # Client
   String $client_package_name                    = $razor::params::client_package_name,
-  Variant[Undef, String] $client_package_version = undef,
+  Variant[Undef, String] $client_package_version = 'present',
 
   # DB
   String $database_hostname                 = 'localhost',
@@ -78,6 +80,9 @@ class razor (
   String $torquebox_package_version = 'present',
   String $server_config_file        = $razor::params::server_config_file,
   String $server_service_name       = $razor::params::server_service_name,
+  $server_broker_paths          = $razor::params::server_broker_paths,
+  $server_task_paths          = $razor::params::server_task_paths,
+  $server_hook_paths          = $razor::params::server_hook_paths,
 
   # TFTP
   String $server_hostname           = $::ipaddress,

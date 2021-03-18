@@ -13,8 +13,11 @@ class razor::server inherits razor {
   assert_type(String, $::razor::database_password) |$expected, $actual| {
     fail('database_password is a required parameter with enable_server = true.')
   }
-  validate_absolute_path($::razor::server_config_path)
-  validate_absolute_path($::razor::repo_store_path)
+  validate_string($::razor::database_hostname, $::razor::database_name)
+  validate_string($::razor::database_username, $::razor::database_password)
+  validate_string($::razor::server_package_name, $::razor::server_package_version)
+  validate_absolute_path($::razor::server_config_file)
+  validate_absolute_path($::razor::repo_store)
 
   # Compatibility
   case $::osfamily {
@@ -112,6 +115,12 @@ class razor::server inherits razor {
     } -> Package[$::razor::server_package_name]
   }
 
+  # Requirement for version >=1.0.0 installation on Ubuntu 12.04
+  # Package does not auto-require it!
+  package { $::razor::torquebox_package_name:
+    ensure => $::razor::torquebox_package_version,
+  } ->
+
   package { $::razor::server_package_name:
     ensure => $::razor::server_package_version,
   } ~>  Exec['razor-migrate-database']
@@ -121,6 +130,7 @@ class razor::server inherits razor {
     ensure => 'present',
     value  => "jdbc:postgresql://${::razor::database_hostname}/${::razor::database_name}?user=${::razor::database_username}&password=${::razor::database_password}"
   }
+
 
   ::razor::razor_yaml_setting{ 'all/repo_store_root':
     ensure => 'present',
@@ -133,6 +143,24 @@ class razor::server inherits razor {
     ensure     => 'present',
     value      => $::razor::match_nodes_on,
     value_type => 'array',
+  }
+
+  ::razor::razor_yaml_setting{'all/broker_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_broker_paths, "brokers"), ':')
+  }
+
+  ::razor::razor_yaml_setting{'all/hook_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_hook_paths, "hooks"), ':')
+  }
+
+  ::razor::razor_yaml_setting{'all/task_path':
+    ensure => present,
+    target => $::razor::server_config_file,
+    value  => join(concat($::razor::server_task_paths, "tasks"), ':')
   }
 
   # Service

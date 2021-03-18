@@ -1,4 +1,5 @@
 # Custom Type: Razor - Hook
+require "puppet/parameter/boolean"
 
 Puppet::Type.newtype(:razor_hook) do
   @doc = "Razor Hook"
@@ -16,5 +17,6 @@ Puppet::Type.newtype(:razor_hook) do
   newproperty(:configuration) do
     desc "The hook configuration (Hash)"
   end
-  
+ 
+  newparam(:mutable_configuration, :boolean => true, :parent => Puppet::Parameter::Boolean)
 end
