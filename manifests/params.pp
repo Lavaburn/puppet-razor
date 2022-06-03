@@ -44,4 +44,10 @@ class razor::params {
   $microkernel_url = 'http://links.puppetlabs.com/razor-microkernel-latest.tar'
 
   $match_nodes_on = ['mac']
+
+  $mk_install_dir     = '/opt/razor-el-mk'
+  $mk_install_script  = '/opt/build-microkernel.sh'
+
+  $mk_repo_source   = 'https://github.com/puppetlabs-toy-chest/razor-el-mk'
+  $mk_repo_revision = 'master' # Your OS must support Ruby 2.6 !!
 }

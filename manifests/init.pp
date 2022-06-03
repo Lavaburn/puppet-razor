@@ -103,6 +103,12 @@ class razor (
   # Microkernel
   Optional[String] $microkernel_url = $razor::params::microkernel_url,
 
+  String $mk_install_dir    = $razor::params::mk_install_dir,
+  String $mk_install_script = $razor::params::mk_install_script,
+
+  String $mk_repo_source   = $razor::params::mk_repo_source,
+  String $mk_repo_revision = $razor::params::mk_repo_revision,
+
   # Override defaults
   Optional[Integer] $server_http_port  = undef,
   Optional[Integer] $server_https_port = undef,
